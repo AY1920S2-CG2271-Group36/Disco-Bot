@@ -1,9 +1,12 @@
 #include "MKL25Z4.h"                    // Device header
 
 #define BAUD_RATE 9600
-#define UART_TX_PORTE22 22 //no need if dont need transmit
 #define UART_RX_PORTE23 23
-#define UART2_INT_PRIO 128 //maybe should be 0?
+#define UART2_INT_PRIO 0 //maybe should be 0?
+
+#define RED_LED 18 // PortB Pin 18
+#define GREEN_LED 19 // PortB Pin 19
+#define BLUE_LED 1 // PortD Pin 1
 
 #define Q_SIZE (32)
 
@@ -15,6 +18,46 @@
 */
 
 
+ void InitGPIO(void)
+{
+  // Enable Clock to PORTB and PORTD
+  SIM->SCGC5 |= ((SIM_SCGC5_PORTB_MASK) | (SIM_SCGC5_PORTD_MASK));
+  
+  // Configure MUX settings to make all 3 pins GPIO
+  PORTB->PCR[RED_LED] &= ~PORT_PCR_MUX_MASK; 
+  PORTB->PCR[RED_LED] |= PORT_PCR_MUX(1); 
+  
+  PORTB->PCR[GREEN_LED] &= ~PORT_PCR_MUX_MASK;
+  PORTB->PCR[GREEN_LED] |= PORT_PCR_MUX(1);
+  
+  PORTD->PCR[BLUE_LED] &= ~PORT_PCR_MUX_MASK;
+  PORTD->PCR[BLUE_LED] |= PORT_PCR_MUX(1);
+  
+  // Set Data Direction Registers for PortB and PortD
+  PTB->PDDR |= (MASK(RED_LED) | MASK(GREEN_LED));
+  PTD->PDDR |= MASK(BLUE_LED);
+}
+
+ void LED_FLASH_RED(void) {
+  PTB->PCOR = MASK(RED_LED);
+}
+
+void LED_FLASH_GREEN(void) {
+  PTB->PCOR = MASK(GREEN_LED);
+}
+
+void LED_FLASH_BLUE(void) {
+  PTD->PCOR = MASK(BLUE_LED);
+}
+
+void LED_OFF(int colour) {
+  switch (colour) {
+    case 1: PTB->PSOR = MASK(RED_LED); break;
+    case 2: PTB->PSOR = MASK(GREEN_LED); break;
+    case 3: PTD->PSOR = MASK(BLUE_LED); break;
+  }
+}
+
 /* Defining the queues*/
 typedef struct{
 		unsigned char Data[Q_SIZE];
@@ -24,7 +67,7 @@ typedef struct{
 } Q_T;
 
 /* Declaring the queues*/
-volatile Q_T tx_q, rx_q; //no need transmit?
+volatile Q_T rx_q;
 
 /* Initialising a queue*/
 void Q_Init(volatile Q_T * q) {
@@ -44,13 +87,10 @@ void initUART2(uint32_t baud_rate)
 	SIM->SCGC4 |= SIM_SCGC4_UART2_MASK;
 	SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
 	
-	PORTE->PCR[UART_TX_PORTE22] &= ~PORT_PCR_MUX_MASK;
-	PORTE->PCR[UART_TX_PORTE22] |= PORT_PCR_MUX(4);
-	
 	PORTE->PCR[UART_RX_PORTE23] &= ~PORT_PCR_MUX_MASK;
 	PORTE->PCR[UART_RX_PORTE23] |= PORT_PCR_MUX(4);
 	
-	UART2->C2 &= ~((UART_C2_TE_MASK) | (UART_C2_RE_MASK));
+	UART2->C2 &= ~(UART_C2_RE_MASK);
 	
 	bus_clock = (DEFAULT_SYSTEM_CLOCK)/2;
 	divisor = bus_clock / (baud_rate * 16);
@@ -61,22 +101,18 @@ void initUART2(uint32_t baud_rate)
 	UART2->S2 = 0;
 	UART2->C3 = 0;
 	
-	UART2->C2 |= ((UART_C2_TE_MASK) | (UART_C2_RE_MASK));
+	UART2->C2 |= UART_C2_RE_MASK;
 	
 	NVIC_SetPriority(UART2_IRQn, UART2_INT_PRIO);
 	NVIC_ClearPendingIRQ(UART2_IRQn);
 	NVIC_EnableIRQ(UART2_IRQn);
 	
-	UART2->C2 |= UART_C2_TIE_MASK |
-	UART_C2_RIE_MASK;
-	
 	UART2->C2 |= UART_C2_RIE_MASK;
 	
-	Q_Init(&tx_q); //no need?
 	Q_Init(&rx_q);
 }
 
-/* To chevck if queue is empty*/
+/* To check if queue is empty*/
 int Q_Empty(volatile Q_T * q) {
 	return q->Size == 0;
 }
@@ -120,17 +156,7 @@ unsigned char Q_Dequeue(volatile Q_T * q) {
 }
 
 void UART2_IRQHandler(void) {
-	NVIC_ClearPendingIRQ(UART2_IRQn);
-	if (UART2->S1 & UART_S1_TDRE_MASK) {
-		// can send another character
-		if (!Q_Empty(&tx_q)) {
-			UART2->D = Q_Dequeue(&tx_q);
-		} else {
-			// queue is empty so disable tx
-			UART2->C2 &= ~UART_C2_TIE_MASK;
-		}
-	}
-	
+	NVIC_ClearPendingIRQ(UART2_IRQn);	
 	if (UART2->S1 & UART_S1_RDRF_MASK) {
 		// received a character
 		if (!Q_Full(&rx_q)) {
@@ -145,10 +171,14 @@ void UART2_IRQHandler(void) {
 /* MAIN function */
 int main(void)
 {
-	uint8_t rx_data = 0x0;
+	uint8_t rx_data;
 	
 	SystemCoreClockUpdate();
 	initUART2(BAUD_RATE);
+  InitGPIO();
+  LED_OFF(1); 
+  LED_OFF(2);
+  LED_OFF(3);
 	
 	while(1)
 	{
@@ -157,12 +187,31 @@ int main(void)
 		/* Parse/decode data received from phone app*/
 		switch (rx_data) {
 			case 1: break; //connected - play tone; blink led
-			case 2: break; //move forward
-			case 4: break; //move backward
-			case 8: break; //move left
-			case 16: break; //move right
-			case 32: break; //stop moving
-			case 64: break; //end challenge
+			case 2: LED_FLASH_RED();
+				delay(0x80000);
+				LED_OFF(1);
+				delay(0x80000); 
+				break; //move forward
+			case 4: LED_FLASH_GREEN();
+				delay(0x80000);
+				LED_OFF(2);
+				delay(0x80000);break; //move backward
+			case 8: LED_FLASH_BLUE();
+				delay(0x80000);
+				LED_OFF(3);
+				delay(0x80000); break; //move left
+			case 16: LED_FLASH_RED();
+				delay(0x80000);
+				LED_OFF(1);
+				delay(0x80000); break; //move right
+			case 32: LED_FLASH_GREEN();
+				delay(0x80000);
+				LED_OFF(2);
+				delay(0x80000);break; //stop moving
+			case 64: LED_FLASH_BLUE();
+				delay(0x80000);
+				LED_OFF(3);
+				delay(0x80000); break; //end challenge
 			default: break; //error
 		}
 	}
