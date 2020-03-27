@@ -86,7 +86,7 @@ void initPWM(void) {
 	PORTC->PCR[PTC3_Pin] |= PORT_PCR_MUX(4);
 	
 	// Enable clock and power source to TPM0
-	SIM->SCGC6 |= ~SIM_SCGC6_TPM0_MASK;
+	SIM->SCGC6 |= SIM_SCGC6_TPM0_MASK;
 	
 	// Select MCGFLLCLK for TPM counter clock
 	SIM->SOPT2 &= ~SIM_SOPT2_TPMSRC_MASK;
