@@ -46,10 +46,35 @@
 #define PTC17_Pin 7
 */
 
-#define FORWARD_DUTY_CYCLE 0.8
+#define FORWARD_DUTY_CYCLE 0.2
 #define NO_CUTY_CYCLE 0
 
 //bool front = false;
+
+// TESTING
+//======================
+void initGPIO(void) {
+	// Enable clock to Port C
+	SIM_SCGC5 |= SIM_SCGC5_PORTC_MASK;
+	
+	// Enable clock to Port D
+	SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK;
+	
+	PORTC->PCR[PTC1_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTC->PCR[PTC1_Pin] |= PORT_PCR_MUX(1);
+	
+	PORTD->PCR[PTD0_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTD->PCR[PTD0_Pin] |= PORT_PCR_MUX(1);
+}
+
+void forward() {
+	PTD->PDDR |= MASK(PTD0_Pin); 
+	PTD->PSOR = MASK(PTD0_Pin); //output high
+	PTC->PDDR |= MASK(PTC1_Pin); 
+	PTC->PCOR = MASK(PTC1_Pin); //output low 
+}
+
+//=========================
 
 /* intiPWM() */
 void initPWM(void) {
@@ -59,10 +84,6 @@ void initPWM(void) {
 	
 	// Enable clock to Port D
 	SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK;
-	
-	SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
-	SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
-	SIM_SCGC5 |= SIM_SCGC5_PORTE_MASK;
 	
 	// Configure the multiplexer values to select the PWM module
 	PORTD->PCR[PTD0_Pin] &= ~PORT_PCR_MUX_MASK;
@@ -112,52 +133,120 @@ void initPWM(void) {
 	
 }
 
+// Spins front left wheel towards 'Front' direction
 void forwardFL(float dutyCycle) {
 	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0_C0V = numClkCycles * dutyCycle;
+	TPM0_C0V = numClkCycles * dutyCycle; 
 	
 	PORTD->PCR[PTD0_Pin] &= ~PORT_PCR_MUX_MASK;
-	PORTD->PCR[PTD0_Pin] |= PORT_PCR_MUX(4);
+	PORTD->PCR[PTD0_Pin] |= PORT_PCR_MUX(4); // Use the timer
+	PTD->PDDR |= MASK(PTD0_Pin);
 	
 	PORTC->PCR[PTC1_Pin] &= ~PORT_PCR_MUX_MASK;
-	PORTC->PCR[PTC1_Pin] |= PORT_PCR_MUX(1);
+	PORTC->PCR[PTC1_Pin] |= PORT_PCR_MUX(1); // Use GPIO
+	PTC->PDDR |= MASK(PTC1_Pin); // Set to Low
 	PTC->PCOR = MASK(PTC1_Pin);
 }
 
+// Spins front right wheel towards 'Front' direction
 void forwardFR(float dutyCycle) {
 	int numClkCycles = PERIOD / CORE_PERIOD;
 	TPM0_C1V = numClkCycles * dutyCycle;
 	
 	PORTD->PCR[PTD1_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD1_Pin] |= PORT_PCR_MUX(4);
+	PTD->PDDR |= MASK(PTD1_Pin);
 	
 	PORTC->PCR[PTC2_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTC->PCR[PTC2_Pin] |= PORT_PCR_MUX(1);
+	PTC->PDDR |= MASK(PTC2_Pin); 
 	PTC->PCOR = MASK(PTC2_Pin);
 }
 
+// Spins rear left wheel towards 'Front' direction
 void forwardRL(float dutyCycle) {
 	int numClkCycles = PERIOD / CORE_PERIOD;
 	TPM0_C2V = numClkCycles * dutyCycle;
 	
 	PORTD->PCR[PTD2_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD2_Pin] |= PORT_PCR_MUX(4);
+	PTD->PDDR |= MASK(PTD2_Pin);
 	
 	PORTC->PCR[PTC3_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTC->PCR[PTC3_Pin] |= PORT_PCR_MUX(1);
+	PTC->PDDR |= MASK(PTC3_Pin); 
 	PTC->PCOR = MASK(PTC3_Pin);
 }
 
+// Spins rear right wheel towards 'Front' direction
 void forwardRR(float dutyCycle) {
 	int numClkCycles = PERIOD / CORE_PERIOD;
 	TPM0_C3V = numClkCycles * dutyCycle;
 	
 	PORTD->PCR[PTD3_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD3_Pin] |= PORT_PCR_MUX(4);
+	PTD->PDDR |= MASK(PTD3_Pin);
 	
 	PORTC->PCR[PTC4_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTC->PCR[PTC4_Pin] |= PORT_PCR_MUX(1);
+	PTC->PDDR |= MASK(PTC4_Pin); 
 	PTC->PCOR = MASK(PTC4_Pin);
+}
+
+void reverseFL(float dutyCycle) {
+	int numClkCycles = PERIOD / CORE_PERIOD;
+	TPM0_C0V = numClkCycles * dutyCycle;
+	
+	PORTD->PCR[PTD0_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTD->PCR[PTD0_Pin] |= PORT_PCR_MUX(1);
+	PTD->PDDR |= MASK(PTD0_Pin);
+	PTD->PCOR = MASK(PTD0_Pin);
+	
+	PORTC->PCR[PTC1_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTC->PCR[PTC1_Pin] |= PORT_PCR_MUX(4);
+	PTC->PDDR |= MASK(PTC1_Pin); 
+}
+
+void reverseFR(float dutyCycle) {
+	int numClkCycles = PERIOD / CORE_PERIOD;
+	TPM0_C0V = numClkCycles * dutyCycle;
+	
+	PORTD->PCR[PTD1_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTD->PCR[PTD1_Pin] |= PORT_PCR_MUX(1);
+	PTD->PDDR |= MASK(PTD1_Pin);
+	PTD->PCOR = MASK(PTD1_Pin);
+	
+	PORTC->PCR[PTC2_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTC->PCR[PTC2_Pin] |= PORT_PCR_MUX(4);
+	PTC->PDDR |= MASK(PTC2_Pin); 
+}
+
+void reverseRL(float dutyCycle) {
+	int numClkCycles = PERIOD / CORE_PERIOD;
+	TPM0_C0V = numClkCycles * dutyCycle;
+	
+	PORTD->PCR[PTD2_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTD->PCR[PTD2_Pin] |= PORT_PCR_MUX(1);
+	PTD->PDDR |= MASK(PTD2_Pin);
+	PTD->PCOR = MASK(PTD2_Pin);
+	
+	PORTC->PCR[PTC3_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTC->PCR[PTC3_Pin] |= PORT_PCR_MUX(4);
+	PTC->PDDR |= MASK(PTC3_Pin); 
+}
+
+void reverseRR(float dutyCycle) {
+	int numClkCycles = PERIOD / CORE_PERIOD;
+	TPM0_C0V = numClkCycles * dutyCycle;
+	
+	PORTD->PCR[PTD3_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTD->PCR[PTD3_Pin] |= PORT_PCR_MUX(1);
+	PTD->PDDR |= MASK(PTD3_Pin);
+	PTD->PCOR = MASK(PTD3_Pin);
+	
+	PORTC->PCR[PTC4_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTC->PCR[PTC4_Pin] |= PORT_PCR_MUX(4);
+	PTC->PDDR |= MASK(PTC4_Pin); 
 }
 
 void stopFL() {
@@ -213,16 +302,44 @@ void startPWM() {
 	TPM0->MOD = numClkCycles - 1;
 }
 
+void stopPWM() {
+	TPM0->MOD = 0;
+}
+
 void moveForward() {
-	startPWM();
+	startPWM(); // Not sure if actually necessary
 	forwardFL(FORWARD_DUTY_CYCLE);
 	forwardRL(FORWARD_DUTY_CYCLE);
 	forwardFR(FORWARD_DUTY_CYCLE);
 	forwardRR(FORWARD_DUTY_CYCLE);
 }
 
+void moveBackward() {
+	startPWM();
+	reverseFL(FORWARD_DUTY_CYCLE);
+	reverseRL(FORWARD_DUTY_CYCLE);
+	reverseFR(FORWARD_DUTY_CYCLE);
+	reverseRR(FORWARD_DUTY_CYCLE);
+}
+
+void rotateLeft() {
+	startPWM();
+	reverseFL(FORWARD_DUTY_CYCLE);
+	forwardFR(FORWARD_DUTY_CYCLE);
+	reverseRL(FORWARD_DUTY_CYCLE);
+	forwardRR(FORWARD_DUTY_CYCLE);
+}
+
+void rotateRight() {
+	startPWM();
+	reverseFR(FORWARD_DUTY_CYCLE);
+	forwardFL(FORWARD_DUTY_CYCLE);
+	reverseRR(FORWARD_DUTY_CYCLE);
+	forwardRL(FORWARD_DUTY_CYCLE);
+}
+
 void stopMovement() {
-	TPM0->MOD = 0;
+	stopPWM();
 	stopFL();
 	stopFR();
 	stopRL();
@@ -238,15 +355,21 @@ void app_main (void *argument) {
   // ...
   for (;;) {
 		moveForward();
-		osDelay(5000);
+		osDelay(1000);
 		stopMovement();
-		osDelay(5000);
+		osDelay(1000);
+		moveBackward();
+		osDelay(1000);
+		stopMovement();
+		osDelay(1000);
 	}
 }
  
 int main (void) {
  
 	initPWM();
+	//initGPIO();
+	//forward();
 	
   // System Initialization
   SystemCoreClockUpdate();

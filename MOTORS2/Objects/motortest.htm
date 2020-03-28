@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\motortest.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\motortest.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Mar 26 15:53:00 2020
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sat Mar 28 23:29:22 2020
 <BR><P>
 <H3>Maximum Stack Usage =        120 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -85,7 +85,7 @@ Global Symbols
 <P><STRONG><a name="[28]"></a>__main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry.o(.ARM.Collect$$$$00000000))
 <BR>[Address Reference Count : 1]<UL><LI> startup_mkl25z4.o(.text)
 </UL>
-<P><STRONG><a name="[82]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
+<P><STRONG><a name="[83]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
 
 <P><STRONG><a name="[3b]"></a>_main_scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry5.o(.ARM.Collect$$$$00000004))
 <BR><BR>[Calls]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
@@ -95,15 +95,15 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
 </UL>
 
-<P><STRONG><a name="[83]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
+<P><STRONG><a name="[84]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
 
-<P><STRONG><a name="[84]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
+<P><STRONG><a name="[85]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
 
-<P><STRONG><a name="[85]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
+<P><STRONG><a name="[86]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
 
-<P><STRONG><a name="[86]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
+<P><STRONG><a name="[87]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
 
-<P><STRONG><a name="[87]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
+<P><STRONG><a name="[88]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
 
 <P><STRONG><a name="[3a]"></a>Reset_Handler</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, startup_mkl25z4.o(.text))
 
@@ -258,18 +258,18 @@ Global Symbols
 <LI><a href="#[36]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osRtxMessageQueuePostProcess
 </UL>
 
-<P><STRONG><a name="[88]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
+<P><STRONG><a name="[89]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
 
-<P><STRONG><a name="[89]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
+<P><STRONG><a name="[8a]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
 
 <P><STRONG><a name="[40]"></a>__aeabi_memset</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, memseta.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_memset$wrapper
 <LI><a href="#[3f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
 </UL>
 
-<P><STRONG><a name="[8a]"></a>__aeabi_memset4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+<P><STRONG><a name="[8b]"></a>__aeabi_memset4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
 
-<P><STRONG><a name="[8b]"></a>__aeabi_memset8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+<P><STRONG><a name="[8c]"></a>__aeabi_memset8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
 
 <P><STRONG><a name="[3f]"></a>__aeabi_memclr</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, memseta.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
@@ -283,19 +283,20 @@ Global Symbols
 <LI><a href="#[34]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;svcRtxThreadNew
 </UL>
 
-<P><STRONG><a name="[8c]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+<P><STRONG><a name="[8d]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
 
 <P><STRONG><a name="[41]"></a>_memset$wrapper</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, memseta.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
 </UL>
 
-<P><STRONG><a name="[75]"></a>__aeabi_fmul</STRONG> (Thumb, 122 bytes, Stack size 16 bytes, fmul.o(.text))
+<P><STRONG><a name="[76]"></a>__aeabi_fmul</STRONG> (Thumb, 122 bytes, Stack size 16 bytes, fmul.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_fmul
 </UL>
-<BR>[Called By]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRR
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRL
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFR
-<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFL
+<BR>[Called By]<UL><LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reverseFL
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRR
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRL
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFR
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFL
 </UL>
 
 <P><STRONG><a name="[42]"></a>__aeabi_i2f</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, fflti.o(.text))
@@ -303,22 +304,24 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_float_epilogue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRR
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRL
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFR
-<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFL
+<BR>[Called By]<UL><LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reverseFL
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRR
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRL
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFR
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFL
 </UL>
 
-<P><STRONG><a name="[76]"></a>__aeabi_f2uiz</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, ffixui.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRR
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRL
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFR
-<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFL
+<P><STRONG><a name="[77]"></a>__aeabi_f2uiz</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, ffixui.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reverseFL
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRR
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRL
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFR
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFL
 </UL>
 
-<P><STRONG><a name="[8d]"></a>__I$use$fp</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, iusefp.o(.text), UNUSED)
+<P><STRONG><a name="[8e]"></a>__I$use$fp</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, iusefp.o(.text), UNUSED)
 
-<P><STRONG><a name="[8e]"></a>_float_round</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, fepilogue.o(.text), UNUSED)
+<P><STRONG><a name="[8f]"></a>_float_round</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, fepilogue.o(.text), UNUSED)
 
 <P><STRONG><a name="[43]"></a>_float_epilogue</STRONG> (Thumb, 114 bytes, Stack size 12 bytes, fepilogue.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = _float_epilogue
@@ -332,11 +335,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_main_scatterload
 </UL>
 
-<P><STRONG><a name="[8f]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
+<P><STRONG><a name="[90]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
-<P><STRONG><a name="[90]"></a>__decompress</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __dczerorl.o(.text), UNUSED)
+<P><STRONG><a name="[91]"></a>__decompress</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __dczerorl.o(.text), UNUSED)
 
-<P><STRONG><a name="[91]"></a>__decompress0</STRONG> (Thumb, 58 bytes, Stack size unknown bytes, __dczerorl.o(.text), UNUSED)
+<P><STRONG><a name="[92]"></a>__decompress0</STRONG> (Thumb, 58 bytes, Stack size unknown bytes, __dczerorl.o(.text), UNUSED)
 
 <P><STRONG><a name="[6b]"></a>OS_Tick_GetIRQn</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, os_systick.o(.text.OS_Tick_GetIRQn))
 <BR><BR>[Called By]<UL><LI><a href="#[2c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;svcRtxKernelStart
@@ -372,7 +375,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[7c]"></a>osKernelStart</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, rtx_kernel.o(.text.osKernelStart))
+<P><STRONG><a name="[7d]"></a>osKernelStart</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, rtx_kernel.o(.text.osKernelStart))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = osKernelStart
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -620,7 +623,7 @@ Global Symbols
 <P><STRONG><a name="[37]"></a>osThreadExit</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, rtx_thread.o(.text.osThreadExit))
 <BR>[Address Reference Count : 1]<UL><LI> rtx_thread.o(.text.svcRtxThreadNew)
 </UL>
-<P><STRONG><a name="[7b]"></a>osThreadNew</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, rtx_thread.o(.text.osThreadNew))
+<P><STRONG><a name="[7c]"></a>osThreadNew</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, rtx_thread.o(.text.osThreadNew))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = osThreadNew
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -645,84 +648,85 @@ Global Symbols
 <LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemCoreClockUpdate
 </UL>
 
-<P><STRONG><a name="[92]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
+<P><STRONG><a name="[93]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
 
-<P><STRONG><a name="[93]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
+<P><STRONG><a name="[94]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
 
-<P><STRONG><a name="[94]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
+<P><STRONG><a name="[95]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[39]"></a>app_main</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, main.o(i.app_main))
+<P><STRONG><a name="[39]"></a>app_main</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, main.o(i.app_main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = app_main &rArr; moveForward &rArr; forwardRR &rArr; __aeabi_i2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
+<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reverseFL
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(i.main)
 </UL>
-<P><STRONG><a name="[74]"></a>forwardFL</STRONG> (Thumb, 90 bytes, Stack size 24 bytes, main.o(i.forwardFL))
+<P><STRONG><a name="[75]"></a>forwardFL</STRONG> (Thumb, 116 bytes, Stack size 24 bytes, main.o(i.forwardFL))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = forwardFL &rArr; __aeabi_i2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
 <BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
 </UL>
 
-<P><STRONG><a name="[77]"></a>forwardFR</STRONG> (Thumb, 92 bytes, Stack size 24 bytes, main.o(i.forwardFR))
+<P><STRONG><a name="[78]"></a>forwardFR</STRONG> (Thumb, 118 bytes, Stack size 24 bytes, main.o(i.forwardFR))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = forwardFR &rArr; __aeabi_i2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
 <BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
 </UL>
 
-<P><STRONG><a name="[78]"></a>forwardRL</STRONG> (Thumb, 92 bytes, Stack size 24 bytes, main.o(i.forwardRL))
+<P><STRONG><a name="[79]"></a>forwardRL</STRONG> (Thumb, 118 bytes, Stack size 24 bytes, main.o(i.forwardRL))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = forwardRL &rArr; __aeabi_i2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
 <BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
 </UL>
 
-<P><STRONG><a name="[79]"></a>forwardRR</STRONG> (Thumb, 92 bytes, Stack size 24 bytes, main.o(i.forwardRR))
+<P><STRONG><a name="[7a]"></a>forwardRR</STRONG> (Thumb, 118 bytes, Stack size 24 bytes, main.o(i.forwardRR))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = forwardRR &rArr; __aeabi_i2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
-<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
 <BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
 </UL>
 
-<P><STRONG><a name="[7a]"></a>initPWM</STRONG> (Thumb, 346 bytes, Stack size 0 bytes, main.o(i.initPWM))
+<P><STRONG><a name="[7b]"></a>initPWM</STRONG> (Thumb, 346 bytes, Stack size 0 bytes, main.o(i.initPWM))
 <BR><BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[26]"></a>main</STRONG> (Thumb, 30 bytes, Stack size 0 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = main &rArr; SystemCoreClockUpdate &rArr; __aeabi_uidivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osThreadNew
-<LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelStart
+<BR>[Calls]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osThreadNew
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelStart
 <LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelInitialize
 <LI><a href="#[6e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemCoreClockUpdate
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initPWM
+<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initPWM
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
 <P><STRONG><a name="[71]"></a>moveForward</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, main.o(i.moveForward))
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = moveForward &rArr; forwardRR &rArr; __aeabi_i2f &rArr; _float_epilogue
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;startPWM
-<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRR
-<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRL
-<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFR
-<LI><a href="#[74]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFL
+<BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;startPWM
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRR
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardRL
+<LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFR
+<LI><a href="#[75]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forwardFL
 </UL>
 <BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_main
 </UL>
@@ -740,34 +744,44 @@ Global Symbols
 <P><STRONG><a name="[30]"></a>osRtxIdleThread</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, rtx_config.o(i.osRtxIdleThread))
 <BR>[Address Reference Count : 1]<UL><LI> rtx_thread.o(.text.osRtxThreadStartup)
 </UL>
-<P><STRONG><a name="[7d]"></a>startPWM</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(i.startPWM))
+<P><STRONG><a name="[74]"></a>reverseFL</STRONG> (Thumb, 116 bytes, Stack size 24 bytes, main.o(i.reverseFL))
+<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = reverseFL &rArr; __aeabi_i2f &rArr; _float_epilogue
+</UL>
+<BR>[Calls]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+</UL>
+<BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_main
+</UL>
+
+<P><STRONG><a name="[7e]"></a>startPWM</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(i.startPWM))
 <BR><BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
 </UL>
 
-<P><STRONG><a name="[7e]"></a>stopFL</STRONG> (Thumb, 74 bytes, Stack size 0 bytes, main.o(i.stopFL))
+<P><STRONG><a name="[7f]"></a>stopFL</STRONG> (Thumb, 74 bytes, Stack size 0 bytes, main.o(i.stopFL))
 <BR><BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
 </UL>
 
-<P><STRONG><a name="[7f]"></a>stopFR</STRONG> (Thumb, 74 bytes, Stack size 0 bytes, main.o(i.stopFR))
+<P><STRONG><a name="[80]"></a>stopFR</STRONG> (Thumb, 74 bytes, Stack size 0 bytes, main.o(i.stopFR))
 <BR><BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
 </UL>
 
 <P><STRONG><a name="[73]"></a>stopMovement</STRONG> (Thumb, 26 bytes, Stack size 4 bytes, main.o(i.stopMovement))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = stopMovement
 </UL>
-<BR>[Calls]<UL><LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopRR
-<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopRL
-<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopFR
-<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopFL
+<BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopRR
+<LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopRL
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopFR
+<LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopFL
 </UL>
 <BR>[Called By]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;app_main
 </UL>
 
-<P><STRONG><a name="[80]"></a>stopRL</STRONG> (Thumb, 74 bytes, Stack size 0 bytes, main.o(i.stopRL))
+<P><STRONG><a name="[81]"></a>stopRL</STRONG> (Thumb, 74 bytes, Stack size 0 bytes, main.o(i.stopRL))
 <BR><BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
 </UL>
 
-<P><STRONG><a name="[81]"></a>stopRR</STRONG> (Thumb, 74 bytes, Stack size 0 bytes, main.o(i.stopRR))
+<P><STRONG><a name="[82]"></a>stopRR</STRONG> (Thumb, 74 bytes, Stack size 0 bytes, main.o(i.stopRR))
 <BR><BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
 </UL>
 <P>
@@ -829,8 +843,8 @@ Local Symbols
 <P><STRONG><a name="[38]"></a>osRtxThreadPostProcess</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, rtx_thread.o(.text.osRtxThreadPostProcess))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = osRtxThreadPostProcess &rArr; osRtxThreadWaitExit &rArr; osRtxThreadDispatch &rArr; osRtxThreadSwitch &rArr; osRtxThreadStackCheck &rArr; osRtxErrorNotify &rArr; __ARM_common_switch8
 </UL>
-<BR>[Calls]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ThreadFlagsCheck
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osRtxThreadWaitExit
+<BR>[Calls]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osRtxThreadWaitExit
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ThreadFlagsCheck
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rtx_thread.o(.text.svcRtxThreadNew)
 </UL>
