@@ -8,7 +8,9 @@
 
 #define BAUD_RATE 9600
 #define UART_RX_PORTE23 23
-#define UART2_INT_PRIO 0 //maybe should be 0?
+#define UART2_INT_PRIO 0 
+
+#define MSG_COUNT 1
 
 #define Q_SIZE (32)
 
@@ -47,6 +49,20 @@
 */
 
 
+/* Creating thread ids*/
+osThreadId_t green_led_connect_id;
+osThreadId_t green_led_moving_id;
+osThreadId_t green_led_stationary_id;
+osThreadId_t red_led_moving_id;
+osThreadId_t red_led_stationary_id;
+osThreadId_t generate_melody_id;
+
+osThreadId_t UART_id;
+
+/* Creating message queue ids*/
+osMessageQueueId_t redMovingMsg;
+
+
 /* Defining the queues*/
 typedef struct{
 		unsigned char Data[Q_SIZE];
@@ -57,14 +73,6 @@ typedef struct{
 
 /* Declaring the queues*/
 volatile Q_T rx_q;
-
-/* Creating threads*/
-osThreadId_t green_led_connect_id;
-osThreadId_t green_led_moving_id;
-osThreadId_t green_led_stationary_id;
-osThreadId_t red_led_moving_id;
-osThreadId_t red_led_stationary_id;
-osThreadId_t generate_melody_id;
 
 void initGPIO(void)
 {
@@ -129,6 +137,8 @@ void initGPIO(void)
 	PTE->PDDR |= (MASK(PTE30_Pin));
 }
 
+
+//--------------------------------------------------UART------------------------------------------------------------------
 
 /* Initialising a queue*/
 void Q_Init(volatile Q_T * q) {
@@ -222,14 +232,15 @@ void UART2_IRQHandler(void) {
 		// received a character
 		if (!Q_Full(&rx_q)) {
 			Q_Enqueue(&rx_q, UART2->D);
+			//set flag for UART thread to run
+			osThreadFlagsSet(UART_id, 0x0001); 
 		} else {
-			// error -queue full.
-			//while (1);
+			// error: queue full
 		}
 	}
 }
 
-// LED
+// -------------------------------------------------------LED-------------------------------------------------------
 void ALL_LED_OFF(void)
 {
 	PTE->PCOR = MASK(PTE4_Pin);
@@ -296,53 +307,69 @@ void generateHalfNote(int freq)
 
  
 /*----------------------------------------------------------------------------
- * Application main thread
+ * Application  threads
  *---------------------------------------------------------------------------*/
-void UART_DECODE(void *argument) {
-	 uint8_t rx_data;
+void UART_decode(void *argument) {
+	uint8_t rx_data;
+	int red_moving;
 	for(;;)
 	{
+		osThreadFlagsWait(0x0001, osFlagsWaitAll, osWaitForever);
 		rx_data = Q_Dequeue(&rx_q); //get first data in the queue
 		//ALL_LED_OFF();
 		
 		/* Parse/decode data received from phone app*/
 		switch (rx_data) {
-			case 1: 
-				break; //connected - play tone; blink led
-			case 2: 
-				break; //move forward
+			//connected - play tone; blink led
+			case 1: osThreadFlagsSet(green_led_connect_id, 0x0001);
+				break; 
+			//move forward
+			case 2: red_moving = 1;
+				osMessageQueuePut(redMovingMsg, &red_moving, NULL, 0);
+				break; 
+			//move backward
 			case 4: 
-				break; //move backward
+				break; 
+			//move left
 			case 8: 
-				break; //move left
+				break; 
+			//move right
 			case 16: 
-				break; //move right
-			case 32: 
-				break; //stop moving
+				break; 
+			//stop moving
+			case 32: red_moving = 0;
+				osMessageQueuePut(redMovingMsg, &red_moving, NULL, 0);
+				break; 
+			//end challenge
 			case 64: 
-				break; //end challenge
+				break; 
 			default: break; //error
 		}
 	}
 }
 
 void GREEN_LED_CONNECT(void *argument) {
-	PTB->PSOR = MASK(PTB2_Pin);
-	PTB->PSOR = MASK(PTB3_Pin);
+	for (;;) {
+		osThreadFlagsWait(0x0001, osFlagsWaitAny, osWaitForever);
+		PTB->PSOR = MASK(PTB2_Pin);
+		PTB->PSOR = MASK(PTB3_Pin);
+		PTB->PCOR = MASK(PTB2_Pin);
+		PTB->PCOR = MASK(PTB3_Pin);
+	}
 }
 
 void GREEN_LED_Stationary(void *argument)
 {
 	// ...
 	for(;;) {
-	PTB->PSOR = MASK(PTB2_Pin);
-	PTB->PSOR = MASK(PTB3_Pin);
-	PTE->PSOR = MASK(PTE5_Pin);
-	PTE->PSOR = MASK(PTE20_Pin);
-	PTE->PSOR = MASK(PTE21_Pin);
-	PTE->PSOR = MASK(PTE22_Pin);
-	PTE->PSOR = MASK(PTE29_Pin);
-	PTE->PSOR = MASK(PTE30_Pin);
+		PTB->PSOR = MASK(PTB2_Pin);
+		PTB->PSOR = MASK(PTB3_Pin);
+		PTE->PSOR = MASK(PTE5_Pin);
+		PTE->PSOR = MASK(PTE20_Pin);
+		PTE->PSOR = MASK(PTE21_Pin);
+		PTE->PSOR = MASK(PTE22_Pin);
+		PTE->PSOR = MASK(PTE29_Pin);
+		PTE->PSOR = MASK(PTE30_Pin);
 	}
 }
 
@@ -386,11 +413,17 @@ void GREEN_LED_Moving (void *argument) {
 }
 
 void RED_LED_Moving (void *argument) {
- 
+  int blink = 0;
   // ...
   for (;;) {
-		RED_LED_ON_500();
-		RED_LED_OFF_500();
+		osMessageQueueGet(redMovingMsg, &blink, NULL, 0); //try to get message
+		if (blink == 1) {
+			RED_LED_ON_500();
+			RED_LED_OFF_500();
+		} else {
+			osMessageQueueGet(redMovingMsg, &blink, NULL, osWaitForever);
+		}
+		
 	}
 }
 
@@ -439,14 +472,23 @@ int main (void) {
 	SystemCoreClockUpdate();
 	initGPIO();
 	initUART2(BAUD_RATE);
+	
+	//set priority of uart to be higher than normal
+	const osThreadAttr_t uart_thread_attr = {
+		.priority = osPriorityNormal2
+	};
  
   osKernelInitialize();                 // Initialize CMSIS-RTOS
-  green_led_connect_id = osThreadNew(GREEN_LED_CONNECT, NULL, NULL);    // Create application main thread
+	//create threads
+  green_led_connect_id = osThreadNew(GREEN_LED_CONNECT, NULL, NULL);    
 	green_led_moving_id = osThreadNew(GREEN_LED_Moving, NULL, NULL);
 	green_led_stationary_id = osThreadNew(GREEN_LED_Stationary, NULL, NULL);
 	red_led_moving_id = osThreadNew(RED_LED_Moving, NULL, NULL);
 	red_led_stationary_id = osThreadNew(RED_LED_Stationary, NULL, NULL);
 	generate_melody_id = osThreadNew(generate_melody, NULL, NULL);
+	UART_id = osThreadNew(UART_decode, NULL, &uart_thread_attr);
+	//create message queues
+	redMovingMsg = osMessageQueueNew(MSG_COUNT, sizeof(int), NULL);
 	osKernelStart();                      // Start thread execution
   for (;;) {}
 }
