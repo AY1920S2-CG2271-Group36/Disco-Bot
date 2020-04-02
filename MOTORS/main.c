@@ -24,9 +24,15 @@
 #define PTD0_Pin 0 												// AIN1
 #define PTC1_Pin 1												// AIN2
 
+/*
 // TPM0_CH1 (Front Right)
-#define PTD1_Pin 1												// BIN1
-#define PTC2_Pin 2												// BIN2
+#define PTD5_Pin 1												// BIN1
+#define PTC9_Pin 2												// BIN2
+*/
+
+// TPM0_CH5 (Front Right)
+#define PTD5_Pin 5												// BIN1
+#define PTC9_Pin 9												// BIN2
 
 // TPM0_CH2 (Rear Left)
 #define PTD2_Pin 2												// AIN1
@@ -92,11 +98,11 @@ void initPWM(void) {
 	//PORTC->PCR[PTC1_Pin] &= ~PORT_PCR_MUX_MASK;
 	//PORTC->PCR[PTC1_Pin] |= PORT_PCR_MUX(4);
 	
-	PORTD->PCR[PTD1_Pin] &= ~PORT_PCR_MUX_MASK;
-	PORTD->PCR[PTD1_Pin] |= PORT_PCR_MUX(4);
+	PORTD->PCR[PTD5_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTD->PCR[PTD5_Pin] |= PORT_PCR_MUX(4);
 
-	//PORTC->PCR[PTC2_Pin] &= ~PORT_PCR_MUX_MASK;
-	//PORTC->PCR[PTC2_Pin] |= PORT_PCR_MUX(4);
+	//PORTC->PCR[PTC9_Pin] &= ~PORT_PCR_MUX_MASK;
+	//PORTC->PCR[PTC9_Pin] |= PORT_PCR_MUX(3);
 	
 	PORTD->PCR[PTD2_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD2_Pin] |= PORT_PCR_MUX(4);
@@ -153,14 +159,14 @@ void forwardFR(float dutyCycle) {
 	int numClkCycles = PERIOD / CORE_PERIOD;
 	TPM0_C1V = numClkCycles * dutyCycle;
 	
-	PORTD->PCR[PTD1_Pin] &= ~PORT_PCR_MUX_MASK;
-	PORTD->PCR[PTD1_Pin] |= PORT_PCR_MUX(4);
-	PTD->PDDR |= MASK(PTD1_Pin);
+	PORTD->PCR[PTD5_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTD->PCR[PTD5_Pin] |= PORT_PCR_MUX(4);
+	PTD->PDDR |= MASK(PTD5_Pin);
 	
-	PORTC->PCR[PTC2_Pin] &= ~PORT_PCR_MUX_MASK;
-	PORTC->PCR[PTC2_Pin] |= PORT_PCR_MUX(1);
-	PTC->PDDR |= MASK(PTC2_Pin); 
-	PTC->PCOR = MASK(PTC2_Pin);
+	PORTC->PCR[PTC9_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTC->PCR[PTC9_Pin] |= PORT_PCR_MUX(1);
+	PTC->PDDR |= MASK(PTC9_Pin); 
+	PTC->PCOR = MASK(PTC9_Pin);
 }
 
 // Spins rear left wheel towards 'Front' direction
@@ -211,14 +217,14 @@ void reverseFR(float dutyCycle) {
 	int numClkCycles = PERIOD / CORE_PERIOD;
 	TPM0_C0V = numClkCycles * dutyCycle;
 	
-	PORTD->PCR[PTD1_Pin] &= ~PORT_PCR_MUX_MASK;
-	PORTD->PCR[PTD1_Pin] |= PORT_PCR_MUX(1);
-	PTD->PDDR |= MASK(PTD1_Pin);
-	PTD->PCOR = MASK(PTD1_Pin);
+	PORTD->PCR[PTD5_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTD->PCR[PTD5_Pin] |= PORT_PCR_MUX(1);
+	PTD->PDDR |= MASK(PTD5_Pin);
+	PTD->PCOR = MASK(PTD5_Pin);
 	
-	PORTC->PCR[PTC2_Pin] &= ~PORT_PCR_MUX_MASK;
-	PORTC->PCR[PTC2_Pin] |= PORT_PCR_MUX(4);
-	PTC->PDDR |= MASK(PTC2_Pin); 
+	PORTC->PCR[PTC9_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTC->PCR[PTC9_Pin] |= PORT_PCR_MUX(3);
+	PTC->PDDR |= MASK(PTC9_Pin); 
 }
 
 void reverseRL(float dutyCycle) {
@@ -264,13 +270,13 @@ void stopFL() {
 void stopFR() {
 	TPM0_C1V = 0;
 	
-	PORTD->PCR[PTD1_Pin] &= ~PORT_PCR_MUX_MASK;
-	PORTD->PCR[PTD1_Pin] |= PORT_PCR_MUX(1);
-	PTD->PSOR = MASK(PTD1_Pin);
+	PORTD->PCR[PTD5_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTD->PCR[PTD5_Pin] |= PORT_PCR_MUX(1);
+	PTD->PSOR = MASK(PTD5_Pin);
 	
-	PORTC->PCR[PTC2_Pin] &= ~PORT_PCR_MUX_MASK;
-	PORTC->PCR[PTC2_Pin] |= PORT_PCR_MUX(1);
-	PTC->PSOR = MASK(PTC2_Pin);
+	PORTC->PCR[PTC9_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTC->PCR[PTC9_Pin] |= PORT_PCR_MUX(1);
+	PTC->PSOR = MASK(PTC9_Pin);
 }
 
 void stopRL() {
