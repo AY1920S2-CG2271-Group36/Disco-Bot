@@ -16,8 +16,9 @@
 
 #define MASK(x) (1 << (x))
 
+
 // LED
-#define PTE4_Pin 4
+#define PTE4_Pin 4 //red led
 #define PTB2_Pin 2
 #define PTB3_Pin 3
 #define PTE5_Pin 5
@@ -26,6 +27,8 @@
 #define PTE22_Pin 22
 #define PTE29_Pin 29
 #define PTE30_Pin 30
+
+#define GREEN_LED_RUN_DELAY 200
 
 // BUZZER
 #define PTB0_Pin 0
@@ -37,11 +40,18 @@
 #define Anote 1760
 #define Bbnote 1864
 
+#define C2note 4186
+#define D2note 4699
+#define E2note 5274
+#define F2note 5588
+
 #define Rnote 0
 #define CLK_FREQ 48000000
 #define PRESCALER 128
 #define DUTY_CYCLE 0.5
 #define COUNT_THRES 65000
+
+volatile int green_led_moving = 0;
 
 /* QUESTIONS 
 1. how come when changing the volatile queues use pass by reference (&)
@@ -56,11 +66,16 @@ osThreadId_t green_led_stationary_id;
 osThreadId_t red_led_moving_id;
 osThreadId_t red_led_stationary_id;
 osThreadId_t generate_melody_id;
+osThreadId_t end_challenge_id;
 
 osThreadId_t UART_id;
 
 /* Creating message queue ids*/
 osMessageQueueId_t redMovingMsg;
+osMessageQueueId_t redStationaryMsg;
+osMessageQueueId_t greenMovingMsg;
+osMessageQueueId_t greenStationaryMsg;
+
 
 
 /* Defining the queues*/
@@ -202,6 +217,7 @@ static void delay(volatile uint32_t nof)
 	}
 }
 
+
 int Q_Enqueue(volatile Q_T * q, unsigned char d) {
 	// What if queue is full?
 	if (!Q_Full(q)) {
@@ -270,6 +286,30 @@ void RED_LED_OFF_250(void)
 	osDelay(250);
 }
 
+void ON_ALL_GREEN_LEDS(void)
+{
+	PTB->PSOR = MASK(PTB2_Pin);
+	PTB->PSOR = MASK(PTB3_Pin);
+	PTE->PSOR = MASK(PTE5_Pin);
+	PTE->PSOR = MASK(PTE20_Pin);
+	PTE->PSOR = MASK(PTE21_Pin);
+	PTE->PSOR = MASK(PTE22_Pin);
+	PTE->PSOR = MASK(PTE29_Pin);
+	PTE->PSOR = MASK(PTE30_Pin);
+}
+
+void OFF_ALL_GREEN_LEDS(void)
+{
+	PTB->PCOR = MASK(PTB2_Pin);
+	PTB->PCOR = MASK(PTB3_Pin);
+	PTE->PCOR = MASK(PTE5_Pin);
+	PTE->PCOR = MASK(PTE20_Pin);
+	PTE->PCOR = MASK(PTE21_Pin);
+	PTE->PCOR = MASK(PTE22_Pin);
+	PTE->PCOR = MASK(PTE29_Pin);
+	PTE->PCOR = MASK(PTE30_Pin);
+}
+
 // BUZZER
 int calcModValue(int freq_value)
 {
@@ -305,43 +345,87 @@ void generateHalfNote(int freq)
 	osDelay(150);
 }
 
+void generateEndNote(int freq) 
+{
+	generateSignal(freq);
+	delay(0x40000);
+	generateRest();
+	delay(0x40000);
+}
+
  
 /*----------------------------------------------------------------------------
  * Application  threads
  *---------------------------------------------------------------------------*/
 void UART_decode(void *argument) {
 	uint8_t rx_data;
-	int red_moving;
+	int moving, stationary;
 	for(;;)
 	{
 		osThreadFlagsWait(0x0001, osFlagsWaitAll, osWaitForever);
 		rx_data = Q_Dequeue(&rx_q); //get first data in the queue
 		//ALL_LED_OFF();
 		
-		/* Parse/decode data received from phone app*/
+		/* Decode data received from phone app*/
 		switch (rx_data) {
-			//connected - play tone; blink led
-			case 1: osThreadFlagsSet(green_led_connect_id, 0x0001);
+			//CONNECTED
+			case 1: 
+				osThreadFlagsSet(green_led_connect_id, 0x0001); //blink led twice
+				osThreadFlagsSet(generate_melody_id, 0x0001); //play tone then background music
 				break; 
-			//move forward
-			case 2: red_moving = 1;
-				osMessageQueuePut(redMovingMsg, &red_moving, NULL, 0);
-				break; 
-			//move backward
+			//FORWARD
+			case 2: 
+				moving = green_led_moving = 1;
+				osMessageQueuePut(redMovingMsg, &moving, NULL, 0);
+				osMessageQueuePut(greenMovingMsg, &moving, NULL, 0);
+			
+				stationary = 0;
+				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
+				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
+				break;
+			//BACKWARD
 			case 4: 
+				moving = green_led_moving = 1;
+				osMessageQueuePut(redMovingMsg, &moving, NULL, 0);
+				osMessageQueuePut(greenMovingMsg, &moving, NULL, 0);
+			
+				stationary = 0;
+				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
+				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
 				break; 
-			//move left
+			//LEFT
 			case 8: 
+				moving = green_led_moving = 1;
+				osMessageQueuePut(redMovingMsg, &moving, NULL, 0);
+				osMessageQueuePut(greenMovingMsg, &moving, NULL, 0);
+			
+				stationary = 0;
+				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
+				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
 				break; 
-			//move right
+			//RIGHT
 			case 16: 
+				moving = green_led_moving = 1;
+				osMessageQueuePut(redMovingMsg, &moving, NULL, 0);
+				osMessageQueuePut(greenMovingMsg, &moving, NULL, 0);
+			
+				stationary = 0;
+				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
+				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
 				break; 
-			//stop moving
-			case 32: red_moving = 0;
-				osMessageQueuePut(redMovingMsg, &red_moving, NULL, 0);
+			//STOP
+			case 32: 
+				moving = green_led_moving = 0;
+				osMessageQueuePut(redMovingMsg, &moving, NULL, 0);
+				osMessageQueuePut(greenMovingMsg, &moving, NULL, 0);
+				
+				stationary = 1;
+				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
+				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
 				break; 
-			//end challenge
+			//END CHALLENGE
 			case 64: 
+				osThreadFlagsSet(end_challenge_id, 0x0001);
 				break; 
 			default: break; //error
 		}
@@ -351,70 +435,96 @@ void UART_decode(void *argument) {
 void GREEN_LED_CONNECT(void *argument) {
 	for (;;) {
 		osThreadFlagsWait(0x0001, osFlagsWaitAny, osWaitForever);
-		PTB->PSOR = MASK(PTB2_Pin);
-		PTB->PSOR = MASK(PTB3_Pin);
-		PTB->PCOR = MASK(PTB2_Pin);
-		PTB->PCOR = MASK(PTB3_Pin);
+		for(int i = 0; i < 2; i++ ) {
+		ON_ALL_GREEN_LEDS();
+		osDelay(300);	
+		OFF_ALL_GREEN_LEDS();
+		osDelay(300);	
+	}
 	}
 }
 
 void GREEN_LED_Stationary(void *argument)
 {
-	// ...
+	int led_on = 0;
 	for(;;) {
-		PTB->PSOR = MASK(PTB2_Pin);
-		PTB->PSOR = MASK(PTB3_Pin);
-		PTE->PSOR = MASK(PTE5_Pin);
-		PTE->PSOR = MASK(PTE20_Pin);
-		PTE->PSOR = MASK(PTE21_Pin);
-		PTE->PSOR = MASK(PTE22_Pin);
-		PTE->PSOR = MASK(PTE29_Pin);
-		PTE->PSOR = MASK(PTE30_Pin);
+		osMessageQueueGet(greenStationaryMsg, &led_on, NULL, 0);
+		if (led_on == 1) {
+			ON_ALL_GREEN_LEDS();
+		} else {
+			OFF_ALL_GREEN_LEDS();
+			osMessageQueueGet(greenStationaryMsg, &led_on, NULL, osWaitForever);
+		}
 	}
 }
 
 void GREEN_LED_Moving (void *argument) {
- 
-  // ...
+	int run = 0; 
+  
   for (;;) {
-		PTB->PSOR = MASK(PTB2_Pin);
-		osDelay(500);
-		PTB->PCOR = MASK(PTB2_Pin);
-		osDelay(500);
-		PTB->PSOR = MASK(PTB3_Pin);
-		osDelay(500);
-		PTB->PCOR = MASK(PTB3_Pin);
-		osDelay(500);
-		PTE->PSOR = MASK(PTE5_Pin);
-		osDelay(500);
-		PTE->PCOR = MASK(PTE5_Pin);
-		osDelay(500);
-		PTE->PSOR = MASK(PTE20_Pin);
-		osDelay(500);
-		PTE->PCOR = MASK(PTE20_Pin);
-		osDelay(500);
-		PTE->PSOR = MASK(PTE21_Pin);
-		osDelay(500);
-		PTE->PCOR = MASK(PTE21_Pin);
-		osDelay(500);
-		PTE->PSOR = MASK(PTE22_Pin);
-		osDelay(500);
-		PTE->PCOR = MASK(PTE22_Pin);
-		osDelay(500);
-		PTE->PSOR = MASK(PTE29_Pin);
-		osDelay(500);
-		PTE->PCOR = MASK(PTE29_Pin);
-		osDelay(500);
-		PTE->PSOR = MASK(PTE30_Pin);
-		osDelay(500);
-		PTE->PCOR = MASK(PTE30_Pin);
-		osDelay(500);
+		osMessageQueueGet(greenMovingMsg, &run, NULL, 0);
+		if (run == 1) {
+			PTB->PSOR = MASK(PTB2_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			PTB->PCOR = MASK(PTB2_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			if (green_led_moving == 0) {
+				continue;
+			}
+			PTB->PSOR = MASK(PTB3_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			PTB->PCOR = MASK(PTB3_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			if (green_led_moving == 0) {
+				continue;
+			}
+			PTE->PSOR = MASK(PTE5_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			PTE->PCOR = MASK(PTE5_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			if (green_led_moving == 0) {
+				continue;
+			}
+			PTE->PSOR = MASK(PTE20_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			PTE->PCOR = MASK(PTE20_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			if (green_led_moving == 0) {
+				continue;
+			}
+			PTE->PSOR = MASK(PTE21_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			PTE->PCOR = MASK(PTE21_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			if (green_led_moving == 0) {
+				continue;
+			}
+			PTE->PSOR = MASK(PTE22_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			PTE->PCOR = MASK(PTE22_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			if (green_led_moving == 0) {
+				continue;
+			}
+			PTE->PSOR = MASK(PTE29_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			PTE->PCOR = MASK(PTE29_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			if (green_led_moving == 0) {
+				continue;
+			}
+			PTE->PSOR = MASK(PTE30_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+			PTE->PCOR = MASK(PTE30_Pin);
+			osDelay(GREEN_LED_RUN_DELAY);
+		} else {
+			osMessageQueueGet(greenMovingMsg, &run, NULL, osWaitForever);
+		}
 	}
 }
 
 void RED_LED_Moving (void *argument) {
   int blink = 0;
-  // ...
   for (;;) {
 		osMessageQueueGet(redMovingMsg, &blink, NULL, 0); //try to get message
 		if (blink == 1) {
@@ -428,16 +538,35 @@ void RED_LED_Moving (void *argument) {
 }
 
 void RED_LED_Stationary (void *argument) {
- 
-  // ...
+  int blink = 0;
   for (;;) {
-		RED_LED_ON_250();
-		RED_LED_OFF_250();
+		osMessageQueueGet(redStationaryMsg, &blink, NULL, 0); 
+		if (blink == 1) {
+			RED_LED_ON_250();
+			RED_LED_OFF_250();
+		} else {
+			osMessageQueueGet(redStationaryMsg, &blink, NULL, osWaitForever);
+		}
 	}
 }
 
 void generate_melody (void *argument) {
-			while(1)
+	osThreadFlagsWait(0x0001, osFlagsWaitAll, osWaitForever);
+	
+	//connected tone sequence
+	generateHalfNote(C2note);
+	generateHalfNote(D2note);
+	generateHalfNote(E2note);
+	generateHalfNote(F2note);
+	
+	//on stationary leds
+	int stationary = 1;
+	osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
+	osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
+	
+	osDelay(1000);
+	
+	while(1)
 			{
 				generateFullNote(Cnote);
 				generateHalfNote(Cnote);
@@ -466,6 +595,19 @@ void generate_melody (void *argument) {
 			}	
 }
 
+void end_challenge(void *argument)
+{
+	osThreadFlagsWait(0x0001, osFlagsWaitAll, osWaitForever);
+	for (;;) {
+		generateEndNote(F2note);
+		generateEndNote(E2note);
+		generateEndNote(D2note);
+		generateEndNote(C2note);
+		OFF_ALL_GREEN_LEDS();
+		ALL_LED_OFF();
+		while(1) {}
+	}
+}
  
 int main (void) {
 	
@@ -477,8 +619,15 @@ int main (void) {
 	const osThreadAttr_t uart_thread_attr = {
 		.priority = osPriorityNormal2
 	};
- 
-  osKernelInitialize();                 // Initialize CMSIS-RTOS
+	
+	//set priority of end_challenge to be higher than normal
+	const osThreadAttr_t end_challenge_thread_attr = {
+		.priority = osPriorityNormal2
+	};
+	
+  // Initialize CMSIS-RTOS
+  osKernelInitialize();                 
+	
 	//create threads
   green_led_connect_id = osThreadNew(GREEN_LED_CONNECT, NULL, NULL);    
 	green_led_moving_id = osThreadNew(GREEN_LED_Moving, NULL, NULL);
@@ -487,8 +636,15 @@ int main (void) {
 	red_led_stationary_id = osThreadNew(RED_LED_Stationary, NULL, NULL);
 	generate_melody_id = osThreadNew(generate_melody, NULL, NULL);
 	UART_id = osThreadNew(UART_decode, NULL, &uart_thread_attr);
+	end_challenge_id = osThreadNew(end_challenge, NULL, &end_challenge_thread_attr);
+	
 	//create message queues
 	redMovingMsg = osMessageQueueNew(MSG_COUNT, sizeof(int), NULL);
-	osKernelStart();                      // Start thread execution
+	redStationaryMsg = osMessageQueueNew(MSG_COUNT, sizeof(int), NULL);
+	greenMovingMsg = osMessageQueueNew(MSG_COUNT, sizeof(int), NULL);
+	greenStationaryMsg = osMessageQueueNew(MSG_COUNT, sizeof(int), NULL);
+	
+	// Start thread execution
+	osKernelStart(); 
   for (;;) {}
 }
