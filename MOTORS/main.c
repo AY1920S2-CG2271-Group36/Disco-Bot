@@ -157,7 +157,7 @@ void forwardFL(float dutyCycle) {
 // Spins front right wheel towards 'Front' direction
 void forwardFR(float dutyCycle) {
 	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0_C1V = numClkCycles * dutyCycle;
+	TPM0_C5V = numClkCycles * dutyCycle;
 	
 	PORTD->PCR[PTD5_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD5_Pin] |= PORT_PCR_MUX(4);
@@ -215,7 +215,7 @@ void reverseFL(float dutyCycle) {
 
 void reverseFR(float dutyCycle) {
 	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0_C0V = numClkCycles * dutyCycle;
+	TPM0_C5V = numClkCycles * dutyCycle;
 	
 	PORTD->PCR[PTD5_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD5_Pin] |= PORT_PCR_MUX(1);
@@ -229,7 +229,7 @@ void reverseFR(float dutyCycle) {
 
 void reverseRL(float dutyCycle) {
 	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0_C0V = numClkCycles * dutyCycle;
+	TPM0_C2V = numClkCycles * dutyCycle;
 	
 	PORTD->PCR[PTD2_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD2_Pin] |= PORT_PCR_MUX(1);
@@ -243,7 +243,7 @@ void reverseRL(float dutyCycle) {
 
 void reverseRR(float dutyCycle) {
 	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0_C0V = numClkCycles * dutyCycle;
+	TPM0_C3V = numClkCycles * dutyCycle;
 	
 	PORTD->PCR[PTD3_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD3_Pin] |= PORT_PCR_MUX(1);
@@ -268,7 +268,7 @@ void stopFL() {
 }
 
 void stopFR() {
-	TPM0_C1V = 0;
+	TPM0_C5V = 0;
 	
 	PORTD->PCR[PTD5_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD5_Pin] |= PORT_PCR_MUX(1);
@@ -294,13 +294,13 @@ void stopRL() {
 void stopRR() {
 	TPM0_C3V = 0;
 	
-	PORTD->PCR[PTD2_Pin] &= ~PORT_PCR_MUX_MASK;
-	PORTD->PCR[PTD2_Pin] |= PORT_PCR_MUX(1);
-	PTD->PSOR = MASK(PTD2_Pin);
+	PORTD->PCR[PTD3_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTD->PCR[PTD3_Pin] |= PORT_PCR_MUX(1);
+	PTD->PSOR = MASK(PTD3_Pin);
 	
-	PORTC->PCR[PTC3_Pin] &= ~PORT_PCR_MUX_MASK;
-	PORTC->PCR[PTC3_Pin] |= PORT_PCR_MUX(1);
-	PTC->PSOR = MASK(PTC3_Pin);
+	PORTC->PCR[PTC4_Pin] &= ~PORT_PCR_MUX_MASK;
+	PORTC->PCR[PTC4_Pin] |= PORT_PCR_MUX(1);
+	PTC->PSOR = MASK(PTC4_Pin);
 }
 
 void startPWM() {
@@ -360,12 +360,13 @@ void app_main (void *argument) {
  
   // ...
   for (;;) {
-		moveForward();
+		//moveForward();
+		rotateRight();
 		osDelay(1000);
-		stopMovement();
-		osDelay(1000);
-		moveBackward();
-		osDelay(1000);
+		//stopMovement();
+		//osDelay(1000);
+		//moveBackward();
+		//osDelay(1000);
 		stopMovement();
 		osDelay(1000);
 	}
