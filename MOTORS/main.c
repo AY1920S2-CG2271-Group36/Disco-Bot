@@ -11,24 +11,19 @@
  *---------------------------------------------------------------------------*/
 
 #include "MKL25Z4.h"                    // Device header
-//#include "math.h"
 #define MASK(x) 			(1 << (x))
-#define DELAYCOUNT    100000
-#define PERIOD				0.02
-#define CORE_PERIOD		(2.67/1000000)  // Prescalar 128
+//#define DELAYCOUNT    100000
+//#define PERIOD				0.02
+//#define CORE_PERIOD		(2.67/1000000)  // Prescalar 128
 
-#define PTB0_Pin 0
-#define PTB1_Pin 1
+#define PWM_FREQ 50
+#define CLK_FREQ 48000000
+#define PRESCALER 128
+#define FORWARD_DUTY_CYCLE 0.5
 
 // TPM0_CH0 (Front Left)
 #define PTD0_Pin 0 												// AIN1
 #define PTC1_Pin 1												// AIN2
-
-/*
-// TPM0_CH1 (Front Right)
-#define PTD5_Pin 1												// BIN1
-#define PTC9_Pin 2												// BIN2
-*/
 
 // TPM0_CH5 (Front Right)
 #define PTD5_Pin 5												// BIN1
@@ -42,45 +37,6 @@
 #define PTD3_Pin 3												// BIN1
 #define PTC4_Pin 4												// BIN2
 
-/*
-#define PTD0_Pin 6 												// Left Motors
-#define PTD2_Pin 8 												// Right Motors
-
-#define PTC12_Pin 1 											// L
-#define PTC13_Pin 3
-#define PTC16_Pin 5
-#define PTC17_Pin 7
-*/
-
-#define FORWARD_DUTY_CYCLE 0.2
-#define NO_CUTY_CYCLE 0
-
-//bool front = false;
-
-// TESTING
-//======================
-void initGPIO(void) {
-	// Enable clock to Port C
-	SIM_SCGC5 |= SIM_SCGC5_PORTC_MASK;
-	
-	// Enable clock to Port D
-	SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK;
-	
-	PORTC->PCR[PTC1_Pin] &= ~PORT_PCR_MUX_MASK;
-	PORTC->PCR[PTC1_Pin] |= PORT_PCR_MUX(1);
-	
-	PORTD->PCR[PTD0_Pin] &= ~PORT_PCR_MUX_MASK;
-	PORTD->PCR[PTD0_Pin] |= PORT_PCR_MUX(1);
-}
-
-void forward() {
-	PTD->PDDR |= MASK(PTD0_Pin); 
-	PTD->PSOR = MASK(PTD0_Pin); //output high
-	PTC->PDDR |= MASK(PTC1_Pin); 
-	PTC->PCOR = MASK(PTC1_Pin); //output low 
-}
-
-//=========================
 
 /* intiPWM() */
 void initPWM(void) {
@@ -130,19 +86,32 @@ void initPWM(void) {
 	// Edge-aligned PWM mode with high-true pulses
 	TPM0_C0SC &= ~((TPM_CnSC_ELSB_MASK) | (TPM_CnSC_ELSA_MASK) | (TPM_CnSC_MSB_MASK) | (TPM_CnSC_MSA_MASK));
 	TPM0_C0SC |= (TPM_CnSC_ELSB(1) | TPM_CnSC_MSB(1));
-	TPM0_C1SC &= ~((TPM_CnSC_ELSB_MASK) | (TPM_CnSC_ELSA_MASK) | (TPM_CnSC_MSB_MASK) | (TPM_CnSC_MSA_MASK));
-	TPM0_C1SC |= (TPM_CnSC_ELSB(1) | TPM_CnSC_MSB(1));
 	TPM0_C2SC &= ~((TPM_CnSC_ELSB_MASK) | (TPM_CnSC_ELSA_MASK) | (TPM_CnSC_MSB_MASK) | (TPM_CnSC_MSA_MASK));
 	TPM0_C2SC |= (TPM_CnSC_ELSB(1) | TPM_CnSC_MSB(1));
 	TPM0_C3SC &= ~((TPM_CnSC_ELSB_MASK) | (TPM_CnSC_ELSA_MASK) | (TPM_CnSC_MSB_MASK) | (TPM_CnSC_MSA_MASK));
 	TPM0_C3SC |= (TPM_CnSC_ELSB(1) | TPM_CnSC_MSB(1));
-	
+	TPM0_C5SC &= ~((TPM_CnSC_ELSB_MASK) | (TPM_CnSC_ELSA_MASK) | (TPM_CnSC_MSB_MASK) | (TPM_CnSC_MSA_MASK));
+	TPM0_C5SC |= (TPM_CnSC_ELSB(1) | TPM_CnSC_MSB(1));
 }
 
+/*
+void generateMotorPWM(int freq) 
+{
+	int timer_clock_freq = CLK_FREQ / PRESCALER;
+	int mod_value = timer_clock_freq / freq - 1;
+	TPM0->MOD = mod_value;
+	TPM0_C0V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
+}
+*/
+
 // Spins front left wheel towards 'Front' direction
-void forwardFL(float dutyCycle) {
-	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0_C0V = numClkCycles * dutyCycle; 
+void forwardFL(float freq) {
+	//int numClkCycles = PERIOD / CORE_PERIOD;
+	//TPM0_C0V = numClkCycles * dutyCycle; 
+	int timer_clock_freq = CLK_FREQ / PRESCALER;
+	int mod_value = timer_clock_freq / freq - 1;
+	TPM0->MOD = mod_value;
+	TPM0_C0V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
 	
 	PORTD->PCR[PTD0_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD0_Pin] |= PORT_PCR_MUX(4); // Use the timer
@@ -155,9 +124,13 @@ void forwardFL(float dutyCycle) {
 }
 
 // Spins front right wheel towards 'Front' direction
-void forwardFR(float dutyCycle) {
-	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0_C5V = numClkCycles * dutyCycle;
+void forwardFR(float freq) {
+	//int numClkCycles = PERIOD / CORE_PERIOD;
+	//TPM0_C5V = numClkCycles * dutyCycle;
+	int timer_clock_freq = CLK_FREQ / PRESCALER;
+	int mod_value = timer_clock_freq / freq - 1;
+	TPM0->MOD = mod_value;
+	TPM0_C5V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
 	
 	PORTD->PCR[PTD5_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD5_Pin] |= PORT_PCR_MUX(4);
@@ -170,9 +143,13 @@ void forwardFR(float dutyCycle) {
 }
 
 // Spins rear left wheel towards 'Front' direction
-void forwardRL(float dutyCycle) {
-	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0_C2V = numClkCycles * dutyCycle;
+void forwardRL(float freq) {
+	//int numClkCycles = PERIOD / CORE_PERIOD;
+	//TPM0_C2V = numClkCycles * dutyCycle;
+	int timer_clock_freq = CLK_FREQ / PRESCALER;
+	int mod_value = timer_clock_freq / freq - 1;
+	TPM0->MOD = mod_value;
+	TPM0_C2V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
 	
 	PORTD->PCR[PTD2_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD2_Pin] |= PORT_PCR_MUX(4);
@@ -185,9 +162,13 @@ void forwardRL(float dutyCycle) {
 }
 
 // Spins rear right wheel towards 'Front' direction
-void forwardRR(float dutyCycle) {
-	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0_C3V = numClkCycles * dutyCycle;
+void forwardRR(float freq) {
+	//int numClkCycles = PERIOD / CORE_PERIOD;
+	//TPM0_C3V = numClkCycles * dutyCycle;
+	int timer_clock_freq = CLK_FREQ / PRESCALER;
+	int mod_value = timer_clock_freq / freq - 1;
+	TPM0->MOD = mod_value;
+	TPM0_C3V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
 	
 	PORTD->PCR[PTD3_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD3_Pin] |= PORT_PCR_MUX(4);
@@ -199,9 +180,13 @@ void forwardRR(float dutyCycle) {
 	PTC->PCOR = MASK(PTC4_Pin);
 }
 
-void reverseFL(float dutyCycle) {
-	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0_C0V = numClkCycles * dutyCycle;
+void reverseFL(float freq) {
+	//int numClkCycles = PERIOD / CORE_PERIOD;
+	//TPM0_C0V = numClkCycles * dutyCycle;
+	int timer_clock_freq = CLK_FREQ / PRESCALER;
+	int mod_value = timer_clock_freq / freq - 1;
+	TPM0->MOD = mod_value;
+	TPM0_C0V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
 	
 	PORTD->PCR[PTD0_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD0_Pin] |= PORT_PCR_MUX(1);
@@ -213,9 +198,13 @@ void reverseFL(float dutyCycle) {
 	PTC->PDDR |= MASK(PTC1_Pin); 
 }
 
-void reverseFR(float dutyCycle) {
-	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0_C5V = numClkCycles * dutyCycle;
+void reverseFR(float freq) {
+	//int numClkCycles = PERIOD / CORE_PERIOD;
+	//TPM0_C5V = numClkCycles * dutyCycle;
+	int timer_clock_freq = CLK_FREQ / PRESCALER;
+	int mod_value = timer_clock_freq / freq - 1;
+	TPM0->MOD = mod_value;
+	TPM0_C5V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
 	
 	PORTD->PCR[PTD5_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD5_Pin] |= PORT_PCR_MUX(1);
@@ -227,9 +216,13 @@ void reverseFR(float dutyCycle) {
 	PTC->PDDR |= MASK(PTC9_Pin); 
 }
 
-void reverseRL(float dutyCycle) {
-	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0_C2V = numClkCycles * dutyCycle;
+void reverseRL(float freq) {
+	//int numClkCycles = PERIOD / CORE_PERIOD;
+	//TPM0_C2V = numClkCycles * dutyCycle;
+	int timer_clock_freq = CLK_FREQ / PRESCALER;
+	int mod_value = timer_clock_freq / freq - 1;
+	TPM0->MOD = mod_value;
+	TPM0_C2V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
 	
 	PORTD->PCR[PTD2_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD2_Pin] |= PORT_PCR_MUX(1);
@@ -241,9 +234,13 @@ void reverseRL(float dutyCycle) {
 	PTC->PDDR |= MASK(PTC3_Pin); 
 }
 
-void reverseRR(float dutyCycle) {
-	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0_C3V = numClkCycles * dutyCycle;
+void reverseRR(float freq) {
+	//int numClkCycles = PERIOD / CORE_PERIOD;
+	//TPM0_C3V = numClkCycles * dutyCycle;
+	int timer_clock_freq = CLK_FREQ / PRESCALER;
+	int mod_value = timer_clock_freq / freq - 1;
+	TPM0->MOD = mod_value;
+	TPM0_C3V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
 	
 	PORTD->PCR[PTD3_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD3_Pin] |= PORT_PCR_MUX(1);
@@ -256,6 +253,7 @@ void reverseRR(float dutyCycle) {
 }
 
 void stopFL() {
+	TPM0->MOD = 0;
 	TPM0_C0V = 0;
 	
 	PORTD->PCR[PTD0_Pin] &= ~PORT_PCR_MUX_MASK;
@@ -268,6 +266,7 @@ void stopFL() {
 }
 
 void stopFR() {
+	TPM0->MOD = 0;
 	TPM0_C5V = 0;
 	
 	PORTD->PCR[PTD5_Pin] &= ~PORT_PCR_MUX_MASK;
@@ -280,6 +279,7 @@ void stopFR() {
 }
 
 void stopRL() {
+	TPM0->MOD = 0;
 	TPM0_C2V = 0;
 	
 	PORTD->PCR[PTD2_Pin] &= ~PORT_PCR_MUX_MASK;
@@ -292,6 +292,7 @@ void stopRL() {
 }
 
 void stopRR() {
+	TPM0->MOD = 0;
 	TPM0_C3V = 0;
 	
 	PORTD->PCR[PTD3_Pin] &= ~PORT_PCR_MUX_MASK;
@@ -303,6 +304,7 @@ void stopRR() {
 	PTC->PSOR = MASK(PTC4_Pin);
 }
 
+/*
 void startPWM() {
 	int numClkCycles = PERIOD / CORE_PERIOD;
 	TPM0->MOD = numClkCycles - 1;
@@ -311,9 +313,10 @@ void startPWM() {
 void stopPWM() {
 	TPM0->MOD = 0;
 }
+*/
 
 void moveForward() {
-	startPWM(); // Not sure if actually necessary
+	//startPWM(); // Not sure if actually necessary
 	forwardFL(FORWARD_DUTY_CYCLE);
 	forwardRL(FORWARD_DUTY_CYCLE);
 	forwardFR(FORWARD_DUTY_CYCLE);
@@ -321,7 +324,7 @@ void moveForward() {
 }
 
 void moveBackward() {
-	startPWM();
+	//startPWM();
 	reverseFL(FORWARD_DUTY_CYCLE);
 	reverseRL(FORWARD_DUTY_CYCLE);
 	reverseFR(FORWARD_DUTY_CYCLE);
@@ -329,7 +332,7 @@ void moveBackward() {
 }
 
 void rotateLeft() {
-	startPWM();
+	//startPWM();
 	reverseFL(FORWARD_DUTY_CYCLE);
 	forwardFR(FORWARD_DUTY_CYCLE);
 	reverseRL(FORWARD_DUTY_CYCLE);
@@ -337,7 +340,7 @@ void rotateLeft() {
 }
 
 void rotateRight() {
-	startPWM();
+	//startPWM();
 	reverseFR(FORWARD_DUTY_CYCLE);
 	forwardFL(FORWARD_DUTY_CYCLE);
 	reverseRR(FORWARD_DUTY_CYCLE);
@@ -345,7 +348,7 @@ void rotateRight() {
 }
 
 void stopMovement() {
-	stopPWM();
+	//stopPWM();
 	stopFL();
 	stopFR();
 	stopRL();
@@ -361,12 +364,10 @@ void app_main (void *argument) {
   // ...
   for (;;) {
 		//moveForward();
-		rotateRight();
-		osDelay(1000);
-		//stopMovement();
-		//osDelay(1000);
 		//moveBackward();
-		//osDelay(1000);
+		//rotateLeft();
+		//rotateRight();
+		osDelay(1000);
 		stopMovement();
 		osDelay(1000);
 	}
