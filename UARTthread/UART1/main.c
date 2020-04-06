@@ -36,10 +36,13 @@
 #define Enote 1319
 #define Fnote 1397
 #define Gnote 1568
+#define Abnote 1661
 #define Anote 1760
 #define Bbnote 1864
+#define Bnote 1976
 
 #define C1note 2093
+#define C1snote 2217
 #define D1note 2349
 #define E1note 2637
 #define F1note 2793
@@ -431,6 +434,39 @@ void generateEndNote(int freq)
 	generateRest();
 	delay(0x40000);
 }
+
+void generateEndFullNote(int freq) 
+{
+	generateSignal(freq);
+	delay(300);
+	generateRest();
+	delay(300);
+}
+
+void generateEndHalfNote(int freq) 
+{
+	generateSignal(freq);
+	delay(150);
+	generateRest();
+	delay(150);
+}
+
+void generateEndQuarterNote(int freq) 
+{
+	generateSignal(freq);
+	delay(75);
+	generateRest();
+	delay(75);
+}
+
+void generateEndTripleNote (int freq)
+{
+	generateSignal(freq);
+	delay(300*3);
+	generateRest();
+	delay(300*3);
+}
+
 
 //MOTOR------------------------------------------------------------------
 int startPWM(float freq) {
@@ -991,6 +1027,8 @@ void generate_melody (void *argument) {
 				generateQuarterNote(Bb1note);
 				generateFullNote(Ab1note);
 				generateHalfNote(F1note);
+				
+				
 			}	
 }
 
@@ -998,13 +1036,45 @@ void end_challenge(void *argument)
 {
 	osThreadFlagsWait(0x0001, osFlagsWaitAll, osWaitForever);
 	for (;;) {
+		/*
 		generateEndNote(F2note);
 		generateEndNote(E2note);
 		generateEndNote(D2note);
 		generateEndNote(C2note);
+		*/
+		
+		generateEndHalfNote(C1note);
+		generateEndHalfNote(C1note);
+		generateEndHalfNote(C1note);
+		generateEndFullNote(C1note);
+		generateEndFullNote(Abnote);
+		generateEndFullNote(Bbnote);
+		generateEndFullNote(C1note);
+		generateEndHalfNote(Bbnote);
+		generateEndTripleNote(Cnote);
+		
+		
 		OFF_ALL_GREEN_LEDS();
 		ALL_LED_OFF();
-		while(1) {}
+		
+		while(1) {
+			/*
+			generateEndHalfNote(D1note);
+			generateEndHalfNote(C1snote);
+			generateEndFullNote(Bnote);
+			generateEndHalfNote(C1snote);
+			generateEndHalfNote(Bnote);
+			generateEndFullNote(Anote);
+			generateEndHalfNote(Bnote);
+			generateEndHalfNote(Anote);
+			generateEndHalfNote(Gnote);
+			generateEndHalfNote(Fnote);
+			generateEndFullNote(Anote);
+			generateEndFullNote(Anote);
+			generateEndHalfNote(D1note);
+			generateEndHalfNote(C1snote);
+			*/
+		}
 	}
 }
 
