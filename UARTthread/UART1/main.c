@@ -39,6 +39,15 @@
 #define Anote 1760
 #define Bbnote 1864
 
+#define C1note 2093
+#define D1note 2349
+#define E1note 2637
+#define F1note 2793
+#define G1note 3136
+#define Ab1note 3322
+#define A1note 3520
+#define Bb1note 3729
+#define B1note 3951
 #define C2note 4186
 #define D2note 4699
 #define E2note 5274
@@ -56,7 +65,8 @@
 #define PWM_FREQ 50
 #define CLK_FREQ 48000000
 #define PRESCALER 128
-#define FORWARD_DUTY_CYCLE 0.5
+#define FORWARD_DUTY_CYCLE 0.6
+#define CURVE_DUTY_CYCLE 0.1
 
 // TPM0_CH0 (Front Left)
 #define PTD0_Pin 0 												// AIN1
@@ -91,25 +101,14 @@ osThreadId_t end_challenge_id;
 
 osThreadId_t UART_id;
 
-osThreadId_t forward_id;
-osThreadId_t backward_id;
-osThreadId_t left_id;
-osThreadId_t right_id;
-osThreadId_t stop_id;
-osThreadId_t curve_left_id;
-osThreadId_t curve_right_id;
-
 /* Creating message queue ids*/
 osMessageQueueId_t redMovingMsg;
 osMessageQueueId_t redStationaryMsg;
 osMessageQueueId_t greenMovingMsg;
 osMessageQueueId_t greenStationaryMsg;
 
-osMessageQueueId_t forwardMsg;
-osMessageQueueId_t backwardMsg;
-osMessageQueueId_t leftMsg;
-osMessageQueueId_t rightMsg;
-//osMessageQueueId_t stopMsg;
+osMessageQueueId_t moveMsg;
+
 
 /* Defining the queues*/
 typedef struct{
@@ -198,33 +197,17 @@ void initPWM(void) {
 	PORTD->PCR[PTD0_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD0_Pin] |= PORT_PCR_MUX(4);
 	
-	//PORTC->PCR[PTC1_Pin] &= ~PORT_PCR_MUX_MASK;
-	//PORTC->PCR[PTC1_Pin] |= PORT_PCR_MUX(4);
-	
 	PORTD->PCR[PTD5_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD5_Pin] |= PORT_PCR_MUX(4);
-
-	//PORTC->PCR[PTC9_Pin] &= ~PORT_PCR_MUX_MASK;
-	//PORTC->PCR[PTC9_Pin] |= PORT_PCR_MUX(3);
 	
 	PORTD->PCR[PTD2_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD2_Pin] |= PORT_PCR_MUX(4);
 	
-	//PORTC->PCR[PTC3_Pin] &= ~PORT_PCR_MUX_MASK;
-	//PORTC->PCR[PTC3_Pin] |= PORT_PCR_MUX(4);
-	
 	PORTD->PCR[PTD3_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD3_Pin] |= PORT_PCR_MUX(4);
 	
-	//PORTC->PCR[PTC4_Pin] &= ~PORT_PCR_MUX_MASK;
-	//PORTC->PCR[PTC4_Pin] |= PORT_PCR_MUX(4);
-	
 	// Enable clock and power source to TPM0
 	SIM->SCGC6 |= SIM_SCGC6_TPM0_MASK;
-	
-	// Select MCGFLLCLK for TPM counter clock
-	SIM->SOPT2 &= ~SIM_SOPT2_TPMSRC_MASK;
-	SIM->SOPT2 |= SIM_SOPT2_TPMSRC(1);
 	
 	TPM0->SC &= ~((TPM_SC_CMOD_MASK) | (TPM_SC_PS_MASK));
 	TPM0->SC |= (TPM_SC_CMOD(1) | TPM_SC_PS(7)); // Prescalar 128
@@ -433,6 +416,14 @@ void generateHalfNote(int freq)
 	osDelay(150);
 }
 
+void generateQuarterNote(int freq)
+{
+	generateSignal(freq);
+	osDelay(75);
+	generateRest();
+	osDelay(75);
+}
+
 void generateEndNote(int freq) 
 {
 	generateSignal(freq);
@@ -442,15 +433,16 @@ void generateEndNote(int freq)
 }
 
 //MOTOR------------------------------------------------------------------
-
-// Spins front left wheel towards 'Front' direction
-void forwardFL(float freq) {
-	//int numClkCycles = PERIOD / CORE_PERIOD;
-	//TPM0_C0V = numClkCycles * dutyCycle; 
+int startPWM(float freq) {
 	int timer_clock_freq = CLK_FREQ / PRESCALER;
 	int mod_value = timer_clock_freq / freq - 1;
 	TPM0->MOD = mod_value;
-	TPM0_C0V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
+	return mod_value;
+}
+
+// Spins front left wheel towards 'Front' direction
+void forwardFL(float duty_cycle) {
+	TPM0_C0V = (TPM0->MOD) * duty_cycle;
 	
 	PORTD->PCR[PTD0_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD0_Pin] |= PORT_PCR_MUX(4); // Use the timer
@@ -463,13 +455,8 @@ void forwardFL(float freq) {
 }
 
 // Spins front right wheel towards 'Front' direction
-void forwardFR(float freq) {
-	//int numClkCycles = PERIOD / CORE_PERIOD;
-	//TPM0_C5V = numClkCycles * dutyCycle;
-	int timer_clock_freq = CLK_FREQ / PRESCALER;
-	int mod_value = timer_clock_freq / freq - 1;
-	TPM0->MOD = mod_value;
-	TPM0_C5V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
+void forwardFR(float duty_cycle) {
+	TPM0_C5V = (TPM0->MOD) * duty_cycle;
 	
 	PORTD->PCR[PTD5_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD5_Pin] |= PORT_PCR_MUX(4);
@@ -482,13 +469,8 @@ void forwardFR(float freq) {
 }
 
 // Spins rear left wheel towards 'Front' direction
-void forwardRL(float freq) {
-	//int numClkCycles = PERIOD / CORE_PERIOD;
-	//TPM0_C2V = numClkCycles * dutyCycle;
-	int timer_clock_freq = CLK_FREQ / PRESCALER;
-	int mod_value = timer_clock_freq / freq - 1;
-	TPM0->MOD = mod_value;
-	TPM0_C2V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
+void forwardRL(float duty_cycle) {
+	TPM0_C2V = (TPM0->MOD) * duty_cycle;
 	
 	PORTD->PCR[PTD2_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD2_Pin] |= PORT_PCR_MUX(4);
@@ -501,13 +483,8 @@ void forwardRL(float freq) {
 }
 
 // Spins rear right wheel towards 'Front' direction
-void forwardRR(float freq) {
-	//int numClkCycles = PERIOD / CORE_PERIOD;
-	//TPM0_C3V = numClkCycles * dutyCycle;
-	int timer_clock_freq = CLK_FREQ / PRESCALER;
-	int mod_value = timer_clock_freq / freq - 1;
-	TPM0->MOD = mod_value;
-	TPM0_C3V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
+void forwardRR(float duty_cycle) {
+	TPM0_C3V = (TPM0->MOD) * duty_cycle;
 	
 	PORTD->PCR[PTD3_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD3_Pin] |= PORT_PCR_MUX(4);
@@ -519,13 +496,8 @@ void forwardRR(float freq) {
 	PTC->PCOR = MASK(PTC4_Pin);
 }
 
-void reverseFL(float freq) {
-	//int numClkCycles = PERIOD / CORE_PERIOD;
-	//TPM0_C0V = numClkCycles * dutyCycle;
-	int timer_clock_freq = CLK_FREQ / PRESCALER;
-	int mod_value = timer_clock_freq / freq - 1;
-	TPM0->MOD = mod_value;
-	TPM0_C0V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
+void reverseFL(float duty_cycle) {
+	TPM0_C0V = (TPM0->MOD) * duty_cycle;
 	
 	PORTD->PCR[PTD0_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD0_Pin] |= PORT_PCR_MUX(1);
@@ -537,13 +509,8 @@ void reverseFL(float freq) {
 	PTC->PDDR |= MASK(PTC1_Pin); 
 }
 
-void reverseFR(float freq) {
-	//int numClkCycles = PERIOD / CORE_PERIOD;
-	//TPM0_C5V = numClkCycles * dutyCycle;
-	int timer_clock_freq = CLK_FREQ / PRESCALER;
-	int mod_value = timer_clock_freq / freq - 1;
-	TPM0->MOD = mod_value;
-	TPM0_C5V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
+void reverseFR(float duty_cycle) {
+	TPM0_C5V = (TPM0->MOD) * duty_cycle;
 	
 	PORTD->PCR[PTD5_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD5_Pin] |= PORT_PCR_MUX(1);
@@ -555,13 +522,8 @@ void reverseFR(float freq) {
 	PTC->PDDR |= MASK(PTC9_Pin); 
 }
 
-void reverseRL(float freq) {
-	//int numClkCycles = PERIOD / CORE_PERIOD;
-	//TPM0_C2V = numClkCycles * dutyCycle;
-	int timer_clock_freq = CLK_FREQ / PRESCALER;
-	int mod_value = timer_clock_freq / freq - 1;
-	TPM0->MOD = mod_value;
-	TPM0_C2V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
+void reverseRL(float duty_cycle) {
+	TPM0_C2V = (TPM0->MOD) * duty_cycle;
 	
 	PORTD->PCR[PTD2_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD2_Pin] |= PORT_PCR_MUX(1);
@@ -573,13 +535,8 @@ void reverseRL(float freq) {
 	PTC->PDDR |= MASK(PTC3_Pin); 
 }
 
-void reverseRR(float freq) {
-	//int numClkCycles = PERIOD / CORE_PERIOD;
-	//TPM0_C3V = numClkCycles * dutyCycle;
-	int timer_clock_freq = CLK_FREQ / PRESCALER;
-	int mod_value = timer_clock_freq / freq - 1;
-	TPM0->MOD = mod_value;
-	TPM0_C3V = (TPM0->MOD) * FORWARD_DUTY_CYCLE;
+void reverseRR(float duty_cycle) {
+	TPM0_C3V = (TPM0->MOD) * duty_cycle;
 	
 	PORTD->PCR[PTD3_Pin] &= ~PORT_PCR_MUX_MASK;
 	PORTD->PCR[PTD3_Pin] |= PORT_PCR_MUX(1);
@@ -643,47 +600,68 @@ void stopRR() {
 	PTC->PSOR = MASK(PTC4_Pin);
 }
 
-/*
-void startPWM() {
-	int numClkCycles = PERIOD / CORE_PERIOD;
-	TPM0->MOD = numClkCycles - 1;
-}
-
-void stopPWM() {
-	TPM0->MOD = 0;
-}
-*/
-
 void moveForward() {
-	//startPWM(); // Not sure if actually necessary
-	forwardFL(PWM_FREQ);
-	forwardRL(PWM_FREQ);
-	forwardFR(PWM_FREQ);
-	forwardRR(PWM_FREQ);
+	startPWM(PWM_FREQ); // Not sure if actually necessary
+	forwardFL(FORWARD_DUTY_CYCLE);
+	forwardRL(FORWARD_DUTY_CYCLE);
+	forwardFR(FORWARD_DUTY_CYCLE);
+	forwardRR(FORWARD_DUTY_CYCLE);
 }
 
 void moveBackward() {
-	//startPWM();
-	reverseFL(PWM_FREQ);
-	reverseRL(PWM_FREQ);
-	reverseFR(PWM_FREQ);
-	reverseRR(PWM_FREQ);
+	startPWM(PWM_FREQ);
+	reverseFL(FORWARD_DUTY_CYCLE);
+	reverseRL(FORWARD_DUTY_CYCLE);
+	reverseFR(FORWARD_DUTY_CYCLE);
+	reverseRR(FORWARD_DUTY_CYCLE);
 }
 
 void turnLeft() {
-	//startPWM();
-	reverseFL(PWM_FREQ);
-	forwardFR(PWM_FREQ);
-	reverseRL(PWM_FREQ);
-	forwardRR(PWM_FREQ);
+	startPWM(PWM_FREQ);
+	reverseFL(FORWARD_DUTY_CYCLE);
+	forwardFR(FORWARD_DUTY_CYCLE);
+	reverseRL(FORWARD_DUTY_CYCLE);
+	forwardRR(FORWARD_DUTY_CYCLE);
 }
 
 void turnRight() {
-	//startPWM();
-	reverseFR(PWM_FREQ);
-	forwardFL(PWM_FREQ);
-	reverseRR(PWM_FREQ);
-	forwardRL(PWM_FREQ);
+	startPWM(PWM_FREQ);
+	reverseFR(FORWARD_DUTY_CYCLE);
+	forwardFL(FORWARD_DUTY_CYCLE);
+	reverseRR(FORWARD_DUTY_CYCLE);
+	forwardRL(FORWARD_DUTY_CYCLE);
+}
+
+void curveForwardLeft() {
+	startPWM(PWM_FREQ);
+	forwardFL(CURVE_DUTY_CYCLE);
+	forwardRL(CURVE_DUTY_CYCLE);
+	forwardFR(FORWARD_DUTY_CYCLE);
+	forwardRR(FORWARD_DUTY_CYCLE);
+}
+
+void curveForwardRight() {
+	startPWM(PWM_FREQ);
+	forwardFL(FORWARD_DUTY_CYCLE);
+	forwardRL(FORWARD_DUTY_CYCLE);
+	forwardFR(CURVE_DUTY_CYCLE);
+	forwardRR(CURVE_DUTY_CYCLE);
+}
+
+void curveBackwardLeft() {
+	startPWM(PWM_FREQ);
+	reverseFL(CURVE_DUTY_CYCLE);
+	reverseRL(CURVE_DUTY_CYCLE);
+	reverseFR(FORWARD_DUTY_CYCLE);
+	reverseRR(FORWARD_DUTY_CYCLE);
+}
+
+void curveBackwardRight() {
+	startPWM(PWM_FREQ);
+	reverseFL(FORWARD_DUTY_CYCLE);
+	reverseRL(FORWARD_DUTY_CYCLE);
+	reverseFR(CURVE_DUTY_CYCLE);
+	reverseRR(CURVE_DUTY_CYCLE);
 }
 
 void stopMovement() {
@@ -700,7 +678,7 @@ void stopMovement() {
  *---------------------------------------------------------------------------*/
 void UART_decode(void *argument) {
 	uint8_t rx_data;
-	int moving, stationary;
+	int moving, stationary, direction;
 	for(;;)
 	{
 		osThreadFlagsWait(0x0001, osFlagsWaitAll, osWaitForever);
@@ -723,7 +701,8 @@ void UART_decode(void *argument) {
 				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
 				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
 			
-				osMessageQueuePut(forwardMsg, &moving, NULL, 0);
+				direction = 1;
+				osMessageQueuePut(moveMsg, &direction, NULL, 0);
 				break;
 			//BACKWARD
 			case 4: 
@@ -735,7 +714,8 @@ void UART_decode(void *argument) {
 				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
 				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
 			
-				osMessageQueuePut(backwardMsg, &moving, NULL, 0);
+				direction = 2;
+				osMessageQueuePut(moveMsg, &direction, NULL, 0);
 				break; 
 			//LEFT
 			case 8: 
@@ -746,11 +726,51 @@ void UART_decode(void *argument) {
 				stationary = 0;
 				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
 				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
-			
-				osMessageQueuePut(leftMsg, &moving, NULL, 0);
+				
+				direction = 3;
+				osMessageQueuePut(moveMsg, &direction, NULL, 0);
 				break; 
 			//RIGHT
 			case 16: 
+				moving = green_led_moving = 1;
+				osMessageQueuePut(redMovingMsg, &moving, NULL, 0);
+				osMessageQueuePut(greenMovingMsg, &moving, NULL, 0);
+				
+				stationary = 0;
+				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
+				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
+				
+				direction = 4;
+				osMessageQueuePut(moveMsg, &direction, NULL, 0);
+				break; 
+			//CURVE FORWARD LEFT
+			case 20:
+				moving = green_led_moving = 1;
+				osMessageQueuePut(redMovingMsg, &moving, NULL, 0);
+				osMessageQueuePut(greenMovingMsg, &moving, NULL, 0);
+				
+				stationary = 0;
+				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
+				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
+				
+				direction = 5;
+				osMessageQueuePut(moveMsg, &direction, NULL, 0);
+				break;
+			//CURVE FORWARD RIGHT
+			case 21:
+				moving = green_led_moving = 1;
+				osMessageQueuePut(redMovingMsg, &moving, NULL, 0);
+				osMessageQueuePut(greenMovingMsg, &moving, NULL, 0);
+				
+				stationary = 0;
+				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
+				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
+				
+				direction = 6;
+				osMessageQueuePut(moveMsg, &direction, NULL, 0);
+				break;
+			//CURVE BACKWARD LEFT
+			case 22:
 				moving = green_led_moving = 1;
 				osMessageQueuePut(redMovingMsg, &moving, NULL, 0);
 				osMessageQueuePut(greenMovingMsg, &moving, NULL, 0);
@@ -758,9 +778,24 @@ void UART_decode(void *argument) {
 				stationary = 0;
 				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
 				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
+				
+				direction = 7;
+				osMessageQueuePut(moveMsg, &direction, NULL, 0);
+				break;
+			//CURVE BACKWARD RIGHT
+			case 23:
+				moving = green_led_moving = 1;
+				osMessageQueuePut(redMovingMsg, &moving, NULL, 0);
+				osMessageQueuePut(greenMovingMsg, &moving, NULL, 0);
+				
 			
-				osMessageQueuePut(rightMsg, &moving, NULL, 0);
-				break; 
+				stationary = 0;
+				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
+				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
+				
+				direction = 8;
+				osMessageQueuePut(moveMsg, &direction, NULL, 0);
+				break;
 			//STOP
 			case 32: 
 				moving = green_led_moving = 0;
@@ -770,12 +805,8 @@ void UART_decode(void *argument) {
 				stationary = 1;
 				osMessageQueuePut(redStationaryMsg, &stationary, NULL, 0);
 				osMessageQueuePut(greenStationaryMsg, &stationary, NULL, 0);
-			
-				osThreadFlagsSet(stop_id, 0x0001);
-				osMessageQueuePut(forwardMsg, &moving, NULL, 0);
-				osMessageQueuePut(backwardMsg, &moving, NULL, 0);
-				osMessageQueuePut(leftMsg, &moving, NULL, 0);
-				osMessageQueuePut(rightMsg, &moving, NULL, 0);
+		
+				osMessageQueuePut(moveMsg, &moving, NULL, 0);
 				break; 
 			//END CHALLENGE
 			case 64: 
@@ -923,30 +954,43 @@ void generate_melody (void *argument) {
 	
 	while(1)
 			{
-				generateFullNote(Cnote);
-				generateHalfNote(Cnote);
-				generateFullNote(Dnote);
-				generateFullNote(Cnote);
-				generateFullNote(Fnote);
-				generateFullNote(Enote);
-				generateFullNote(Cnote);
-				generateHalfNote(Cnote);
-				generateFullNote(Dnote);
-				generateFullNote(Cnote);
-				generateFullNote(Gnote);
-				generateFullNote(Fnote);
-				generateFullNote(Cnote);
-				generateHalfNote(Cnote);
-				generateFullNote(Anote);
-				generateFullNote(Fnote);
-				generateFullNote(Enote);
-				generateFullNote(Dnote);
-				generateFullNote(Bbnote);
+				generateFullNote(F1note);
+				generateQuarterNote(E1note);
+				generateQuarterNote(F1note);
+				generateHalfNote(E1note);
+				generateFullNote(C1note);
+				generateQuarterNote(Anote);
+				generateHalfNote(D1note);
+				generateQuarterNote(C1note);
+				generateFullNote(F1note);
+				generateQuarterNote(G1note);
+				generateQuarterNote(A1note);
+				generateHalfNote(C2note);
+				generateFullNote(A1note);
+				generateQuarterNote(D1note);
+				generateQuarterNote(E1note);
+				generateFullNote(D1note);
+				generateHalfNote(D1note);
+				generateHalfNote(C1note);
+				generateQuarterNote(D1note);
+				generateHalfNote(C1note);
 				generateHalfNote(Bbnote);
-				generateFullNote(Anote);
-				generateFullNote(Fnote);
-				generateFullNote(Gnote);
-				generateFullNote(Fnote);
+				generateHalfNote(Bb1note);
+				generateHalfNote(A1note);
+				generateQuarterNote(Bb1note);
+				generateHalfNote(A1note);
+				generateHalfNote(G1note);
+				generateHalfNote(A1note);
+				generateHalfNote(F1note);
+				generateQuarterNote(Bb1note);
+				generateHalfNote(A1note);
+				generateHalfNote(F1note);
+				generateQuarterNote(Bb1note);
+				generateFullNote(Ab1note);
+				generateHalfNote(Fnote);
+				generateQuarterNote(Bb1note);
+				generateFullNote(Ab1note);
+				generateHalfNote(F1note);
 			}	
 }
 
@@ -965,77 +1009,38 @@ void end_challenge(void *argument)
 }
 
 //---------------------------------------------- motor threads -------------------------------------------------
-void move_forward(void *argument) {
+void motor(void *argument) {
 	int move = 0;
   for (;;) {
-		osMessageQueueGet(forwardMsg, &move, NULL, 0); 
+		osMessageQueueGet(moveMsg, &move, NULL, 0); 
 		if (move == 1) {
 			moveForward();
-			osDelay(1000);
-		} else {
-			osMessageQueueGet(forwardMsg, &move, NULL, osWaitForever);
-		}
-	}
-}
-
-void move_backward(void *argument) {
-	int move = 0;
-  for (;;) {
-		osMessageQueueGet(backwardMsg, &move, NULL, 0); 
-		if (move == 1) {
+		} else if (move == 2) {
 			moveBackward();
-		} else {
-			osMessageQueueGet(backwardMsg, &move, NULL, osWaitForever);
-		}
-	}
-}
-
-void turn_left(void *argument) {
-	int move = 0;
-  for (;;) {
-		osMessageQueueGet(leftMsg, &move, NULL, 0); 
-		if (move == 1) {
+		} else if (move == 3) {
 			turnLeft();
-		} else {
-			osMessageQueueGet(leftMsg, &move, NULL, osWaitForever);
-		}
-	}
-}
-
-void turn_right(void *argument) {
-	int move = 0;
-  for (;;) {
-		osMessageQueueGet(rightMsg, &move, NULL, 0); 
-		if (move == 1) {
+		} else if (move == 4) {
 			turnRight();
+		} else if (move == 5) {
+			curveForwardLeft();
+		} else if (move == 6) {
+			curveForwardRight();
+		} else if (move == 7) {
+			curveBackwardLeft();
+		} else if (move == 8) {
+			curveBackwardRight();
 		} else {
-			osMessageQueueGet(rightMsg, &move, NULL, osWaitForever);
+			stopMovement();
+			osMessageQueueGet(moveMsg, &move, NULL, osWaitForever);
 		}
 	}
 }
 
-void stop_movement(void *argument) {
-	for (;;) {
-		osThreadFlagsWait(0x0001, osFlagsWaitAll, osWaitForever);
-		stopMovement();
-	}
-}
- 
 int main (void) {
+	SystemCoreClockUpdate();	
+	initGPIO();
+	initUART2(BAUD_RATE);
 	initPWM();
-	SystemCoreClockUpdate();
-	for (;;) {
-	
-		moveBackward();
-		osDelay(1000);
-		stopMovement();
-		osDelay(1000);
-	
-	}
-	//SystemCoreClockUpdate();
-	//initGPIO();
-	//initUART2(BAUD_RATE);
-	
 	
 	//set priority of uart to be higher than normal
 	const osThreadAttr_t uart_thread_attr = {
@@ -1046,12 +1051,11 @@ int main (void) {
 	const osThreadAttr_t end_challenge_thread_attr = {
 		.priority = osPriorityNormal2
 	};
-	
+
   // Initialize CMSIS-RTOS
   osKernelInitialize();                 
 	
 	//create threads
-	/*
   green_led_connect_id = osThreadNew(GREEN_LED_CONNECT, NULL, NULL);    
 	green_led_moving_id = osThreadNew(GREEN_LED_Moving, NULL, NULL);
 	green_led_stationary_id = osThreadNew(GREEN_LED_Stationary, NULL, NULL);
@@ -1060,12 +1064,7 @@ int main (void) {
 	generate_melody_id = osThreadNew(generate_melody, NULL, NULL);
 	UART_id = osThreadNew(UART_decode, NULL, &uart_thread_attr);
 	end_challenge_id = osThreadNew(end_challenge, NULL, &end_challenge_thread_attr);
-	*/
-	forward_id = osThreadNew(move_forward, NULL, NULL);
-	backward_id = osThreadNew(move_backward, NULL, NULL);
-	left_id = osThreadNew(turn_left, NULL, NULL);
-	right_id = osThreadNew(turn_right, NULL, NULL);
-	stop_id = osThreadNew(stop_movement, NULL, NULL);
+	osThreadNew(motor, NULL, NULL); 
 	
 	//create message queues
 	redMovingMsg = osMessageQueueNew(MSG_COUNT, sizeof(int), NULL);
@@ -1073,12 +1072,10 @@ int main (void) {
 	greenMovingMsg = osMessageQueueNew(MSG_COUNT, sizeof(int), NULL);
 	greenStationaryMsg = osMessageQueueNew(MSG_COUNT, sizeof(int), NULL);
 	
-	forwardMsg = osMessageQueueNew(MSG_COUNT, sizeof(int), NULL);
-	backwardMsg = osMessageQueueNew(MSG_COUNT, sizeof(int), NULL);
-	leftMsg = osMessageQueueNew(MSG_COUNT, sizeof(int), NULL);
-	rightMsg = osMessageQueueNew(MSG_COUNT, sizeof(int), NULL);
+	moveMsg = osMessageQueueNew(MSG_COUNT, sizeof(int), NULL);
 	
 	// Start thread execution
 	osKernelStart(); 
   for (;;) {}
+	
 }
