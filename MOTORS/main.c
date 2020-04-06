@@ -363,7 +363,7 @@ void app_main (void *argument) {
  
   // ...
   for (;;) {
-		//moveForward();
+		moveForward();
 		//moveBackward();
 		//rotateLeft();
 		//rotateRight();
