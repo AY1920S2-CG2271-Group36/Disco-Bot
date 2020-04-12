@@ -31,6 +31,12 @@
 
 // BUZZER
 #define PTB0_Pin 0
+
+#define G0note 784
+#define A0note 880
+#define Bb0note 932
+#define B0note 988
+
 #define Cnote 1046
 #define Dnote 1175
 #define Enote 1319
@@ -39,18 +45,8 @@
 #define Abnote 1661
 #define Anote 1760
 #define Bbnote 1864
-#define Bnote 1976
-
+#define Bnote 1975
 #define C1note 2093
-#define C1snote 2217
-#define D1note 2349
-#define E1note 2637
-#define F1note 2793
-#define G1note 3136
-#define Ab1note 3322
-#define A1note 3520
-#define Bb1note 3729
-#define B1note 3951
 #define C2note 4186
 #define D2note 4699
 #define E2note 5274
@@ -403,68 +399,76 @@ void generateRest(void)
 	TPM1_C0V = 0;
 }
 
+void generateTwoFullNote(int freq) 
+{
+  generateSignal(freq);
+  osDelay(1900);
+	generateRest();
+	osDelay(40);
+}
+
 void generateFullNote(int freq) 
 {
-	generateSignal(freq);
-	osDelay(300);
+  generateSignal(freq);
+  osDelay(900);
 	generateRest();
-	osDelay(300);
+	osDelay(40);
 }
 
 void generateHalfNote(int freq)
 {
-	generateSignal(freq);
-	osDelay(150);
+  generateSignal(freq);
+  osDelay(450);
 	generateRest();
-	osDelay(150);
+	osDelay(40);
 }
 
 void generateQuarterNote(int freq)
 {
-	generateSignal(freq);
-	osDelay(75);
+  generateSignal(freq);
+  osDelay(225);
 	generateRest();
-	osDelay(75);
+	osDelay(40);
 }
 
-void generateEndNote(int freq) 
+void generateEighthNote(int freq)
 {
-	generateSignal(freq);
-	delay(0x40000);
+  generateSignal(freq);
+  osDelay(112);
 	generateRest();
-	delay(0x40000);
+	osDelay(40);
 }
 
 void generateEndFullNote(int freq) 
 {
-	generateSignal(freq);
-	delay(300);
-	generateRest();
-	delay(300);
+  generateSignal(freq);
+  delay(0x40000);
+  generateRest();
+  delay(0x40000);
 }
 
 void generateEndHalfNote(int freq) 
 {
-	generateSignal(freq);
-	delay(150);
-	generateRest();
-	delay(150);
+  generateSignal(freq);
+  delay(0x20000);
+  generateRest();
+  delay(0x20000);
 }
 
 void generateEndQuarterNote(int freq) 
 {
-	generateSignal(freq);
-	delay(75);
-	generateRest();
-	delay(75);
+  generateSignal(freq);
+  delay(0x10000);
+  generateRest();
+  delay(0x10000);
 }
 
 void generateEndTripleNote (int freq)
 {
-	generateSignal(freq);
-	delay(300*3);
-	generateRest();
-	delay(300*3);
+  generateSignal(freq);
+  delay(0x120000);
+  generateRest();
+  delay(0x120000);
 }
 
 
@@ -990,45 +994,42 @@ void generate_melody (void *argument) {
 	
 	while(1)
 			{
-				generateFullNote(F1note);
-				generateQuarterNote(E1note);
-				generateQuarterNote(F1note);
-				generateHalfNote(E1note);
-				generateFullNote(C1note);
-				generateQuarterNote(Anote);
-				generateHalfNote(D1note);
-				generateQuarterNote(C1note);
-				generateFullNote(F1note);
-				generateQuarterNote(G1note);
-				generateQuarterNote(A1note);
-				generateHalfNote(C2note);
-				generateFullNote(A1note);
-				generateQuarterNote(D1note);
-				generateQuarterNote(E1note);
-				generateFullNote(D1note);
-				generateHalfNote(D1note);
-				generateHalfNote(C1note);
-				generateQuarterNote(D1note);
-				generateHalfNote(C1note);
-				generateHalfNote(Bbnote);
-				generateHalfNote(Bb1note);
-				generateHalfNote(A1note);
-				generateQuarterNote(Bb1note);
-				generateHalfNote(A1note);
-				generateHalfNote(G1note);
-				generateHalfNote(A1note);
-				generateHalfNote(F1note);
-				generateQuarterNote(Bb1note);
-				generateHalfNote(A1note);
-				generateHalfNote(F1note);
-				generateQuarterNote(Bb1note);
-				generateFullNote(Ab1note);
-				generateHalfNote(Fnote);
-				generateQuarterNote(Bb1note);
-				generateFullNote(Ab1note);
-				generateHalfNote(F1note);
-				
-				
+				generateFullNote(Fnote);
+        generateQuarterNote(Enote);
+        generateQuarterNote(Fnote);
+        generateHalfNote(Enote);
+        generateFullNote(Cnote);
+        generateQuarterNote(A0note);
+        generateHalfNote(Dnote);
+        generateTwoFullNote(A0note);
+        generateFullNote(Fnote);
+        generateQuarterNote(Gnote);
+        generateQuarterNote(Anote);
+        generateHalfNote(C1note);
+        generateFullNote(Anote);
+        generateEighthNote(Dnote);
+        generateEighthNote(Enote);
+        generateFullNote(Dnote);
+        generateFullNote(Dnote);
+        generateHalfNote(Cnote);
+        generateQuarterNote(Dnote);
+        generateFullNote(Cnote);
+        generateFullNote(Bb0note);
+        generateFullNote(Bbnote);
+        generateHalfNote(Anote);
+        generateQuarterNote(Bbnote);
+        generateFullNote(Anote);
+        generateFullNote(Gnote);
+        generateFullNote(Anote);
+        generateFullNote(Fnote);
+        generateQuarterNote(Bbnote);
+        generateFullNote(Anote);
+        generateHalfNote(Fnote);
+        generateQuarterNote(Bbnote);
+        generateFullNote(Abnote);
+        generateHalfNote(Fnote);
+        generateQuarterNote(Bbnote);
+        generateFullNote(Abnote);
 			}	
 }
 
@@ -1036,45 +1037,20 @@ void end_challenge(void *argument)
 {
 	osThreadFlagsWait(0x0001, osFlagsWaitAll, osWaitForever);
 	for (;;) {
-		/*
-		generateEndNote(F2note);
-		generateEndNote(E2note);
-		generateEndNote(D2note);
-		generateEndNote(C2note);
-		*/
-		
-		generateEndHalfNote(C1note);
-		generateEndHalfNote(C1note);
-		generateEndHalfNote(C1note);
-		generateEndFullNote(C1note);
-		generateEndFullNote(Abnote);
-		generateEndFullNote(Bbnote);
-		generateEndFullNote(C1note);
-		generateEndHalfNote(Bbnote);
-		generateEndTripleNote(Cnote);
-		
-		
 		OFF_ALL_GREEN_LEDS();
 		ALL_LED_OFF();
+		delay(0x8000);
+		generateEndHalfNote(C1note);
+    generateEndHalfNote(C1note);
+    generateEndHalfNote(C1note);
+    generateEndFullNote(C1note);
+    generateEndFullNote(Abnote);
+    generateEndFullNote(Bbnote);
+    generateEndFullNote(C1note);
+    generateEndHalfNote(Bbnote);
+    generateEndTripleNote(Cnote);
 		
-		while(1) {
-			/*
-			generateEndHalfNote(D1note);
-			generateEndHalfNote(C1snote);
-			generateEndFullNote(Bnote);
-			generateEndHalfNote(C1snote);
-			generateEndHalfNote(Bnote);
-			generateEndFullNote(Anote);
-			generateEndHalfNote(Bnote);
-			generateEndHalfNote(Anote);
-			generateEndHalfNote(Gnote);
-			generateEndHalfNote(Fnote);
-			generateEndFullNote(Anote);
-			generateEndFullNote(Anote);
-			generateEndHalfNote(D1note);
-			generateEndHalfNote(C1snote);
-			*/
-		}
+		while(1) {}
 	}
 }
 

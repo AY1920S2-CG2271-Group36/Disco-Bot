@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Objects\UARTthread.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\UARTthread.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon Apr 06 12:04:53 2020
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Mon Apr 06 14:42:32 2020
 <BR><P>
 <H3>Maximum Stack Usage =        168 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-generate_melody &rArr; generateQuarterNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
+generate_melody &rArr; generateTwoFullNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 <P>
 <H3>
 Mutually Recursive functions
@@ -95,7 +95,7 @@ Global Symbols
 <P><STRONG><a name="[28]"></a>__main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry.o(.ARM.Collect$$$$00000000))
 <BR>[Address Reference Count : 1]<UL><LI> startup_mkl25z4.o(.text)
 </UL>
-<P><STRONG><a name="[c2]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
+<P><STRONG><a name="[c6]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
 
 <P><STRONG><a name="[45]"></a>_main_scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry5.o(.ARM.Collect$$$$00000004))
 <BR><BR>[Calls]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
@@ -105,15 +105,15 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
 </UL>
 
-<P><STRONG><a name="[c3]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
+<P><STRONG><a name="[c7]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
 
-<P><STRONG><a name="[c4]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
+<P><STRONG><a name="[c8]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
 
-<P><STRONG><a name="[c5]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
+<P><STRONG><a name="[c9]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
 
-<P><STRONG><a name="[c6]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
+<P><STRONG><a name="[ca]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
 
-<P><STRONG><a name="[c7]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
+<P><STRONG><a name="[cb]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
 
 <P><STRONG><a name="[44]"></a>Reset_Handler</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, startup_mkl25z4.o(.text))
 
@@ -255,11 +255,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = __aeabi_uidivmod
 </UL>
 <BR>[Called By]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemCoreClockUpdate
-<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initUART2
+<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initUART2
 <LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idivmod
 </UL>
 
-<P><STRONG><a name="[c8]"></a>__aeabi_idiv</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, idiv.o(.text), UNUSED)
+<P><STRONG><a name="[cc]"></a>__aeabi_idiv</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, idiv.o(.text), UNUSED)
 
 <P><STRONG><a name="[49]"></a>__aeabi_idivmod</STRONG> (Thumb, 40 bytes, Stack size 16 bytes, idiv.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = __aeabi_idivmod &rArr; __aeabi_uidivmod
@@ -277,20 +277,20 @@ Global Symbols
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueGet
 </UL>
 
-<P><STRONG><a name="[b5]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text))
+<P><STRONG><a name="[b9]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[c9]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
+<P><STRONG><a name="[cd]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
 
 <P><STRONG><a name="[4c]"></a>__aeabi_memset</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, memseta.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_memset$wrapper
 <LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
 </UL>
 
-<P><STRONG><a name="[ca]"></a>__aeabi_memset4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+<P><STRONG><a name="[ce]"></a>__aeabi_memset4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
 
-<P><STRONG><a name="[cb]"></a>__aeabi_memset8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+<P><STRONG><a name="[cf]"></a>__aeabi_memset8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
 
 <P><STRONG><a name="[4b]"></a>__aeabi_memclr</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, memseta.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
@@ -304,7 +304,7 @@ Global Symbols
 <LI><a href="#[2b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;svcRtxKernelInitialize
 </UL>
 
-<P><STRONG><a name="[cc]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
+<P><STRONG><a name="[d0]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
 
 <P><STRONG><a name="[4d]"></a>_memset$wrapper</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, memseta.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
@@ -332,7 +332,7 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 </UL>
 
-<P><STRONG><a name="[a8]"></a>__aeabi_fmul</STRONG> (Thumb, 122 bytes, Stack size 16 bytes, fmul.o(.text))
+<P><STRONG><a name="[ab]"></a>__aeabi_fmul</STRONG> (Thumb, 122 bytes, Stack size 16 bytes, fmul.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_fmul
 </UL>
 <BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reverseRR
@@ -365,14 +365,14 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[2c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;svcRtxKernelStart
 </UL>
 
-<P><STRONG><a name="[cd]"></a>__I$use$fp</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, iusefp.o(.text), UNUSED)
+<P><STRONG><a name="[d1]"></a>__I$use$fp</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, iusefp.o(.text), UNUSED)
 
 <P><STRONG><a name="[55]"></a>__aeabi_dmul</STRONG> (Thumb, 202 bytes, Stack size 72 bytes, dmul.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
+<BR>[Called By]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
 </UL>
 
 <P><STRONG><a name="[57]"></a>__aeabi_ui2f</STRONG> (Thumb, 14 bytes, Stack size 8 bytes, ffltui.o(.text))
@@ -395,14 +395,14 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
+<BR>[Called By]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
 </UL>
 
-<P><STRONG><a name="[bd]"></a>__aeabi_f2iz</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, ffixi.o(.text))
+<P><STRONG><a name="[c1]"></a>__aeabi_f2iz</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, ffixi.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;startPWM
 </UL>
 
-<P><STRONG><a name="[a9]"></a>__aeabi_f2uiz</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, ffixui.o(.text))
+<P><STRONG><a name="[ac]"></a>__aeabi_f2uiz</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, ffixui.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reverseRR
 <LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reverseRL
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;reverseFR
@@ -418,7 +418,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_llsr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
+<BR>[Called By]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
 </UL>
 
 <P><STRONG><a name="[5a]"></a>__aeabi_llsr</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, llushr.o(.text))
@@ -428,7 +428,7 @@ Global Symbols
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
 </UL>
 
-<P><STRONG><a name="[ce]"></a>_ll_ushift_r</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, llushr.o(.text), UNUSED)
+<P><STRONG><a name="[d2]"></a>_ll_ushift_r</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, llushr.o(.text), UNUSED)
 
 <P><STRONG><a name="[50]"></a>_float_round</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, fepilogue.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
@@ -467,7 +467,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_main_scatterload
 </UL>
 
-<P><STRONG><a name="[cf]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
+<P><STRONG><a name="[d3]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
 <P><STRONG><a name="[5c]"></a>__aeabi_llsl</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, llshl.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_llsl
@@ -475,11 +475,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_double_epilogue
 </UL>
 
-<P><STRONG><a name="[d0]"></a>_ll_shift_l</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, llshl.o(.text), UNUSED)
+<P><STRONG><a name="[d4]"></a>_ll_shift_l</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, llshl.o(.text), UNUSED)
 
-<P><STRONG><a name="[d1]"></a>__decompress</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __dczerorl.o(.text), UNUSED)
+<P><STRONG><a name="[d5]"></a>__decompress</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __dczerorl.o(.text), UNUSED)
 
-<P><STRONG><a name="[d2]"></a>__decompress0</STRONG> (Thumb, 58 bytes, Stack size unknown bytes, __dczerorl.o(.text), UNUSED)
+<P><STRONG><a name="[d6]"></a>__decompress0</STRONG> (Thumb, 58 bytes, Stack size unknown bytes, __dczerorl.o(.text), UNUSED)
 
 <P><STRONG><a name="[80]"></a>OS_Tick_AcknowledgeIRQ</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, os_systick.o(.text.OS_Tick_AcknowledgeIRQ))
 <BR><BR>[Called By]<UL><LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osRtxTick_Handler
@@ -501,9 +501,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = osDelay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generate_melody
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateQuarterNote
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateHalfNote
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateFullNote
+<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateTwoFullNote
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateQuarterNote
+<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateHalfNote
+<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateFullNote
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEighthNote
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RED_LED_ON_500
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RED_LED_ON_250
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RED_LED_OFF_500
@@ -520,7 +522,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[b7]"></a>osKernelStart</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, rtx_kernel.o(.text.osKernelStart))
+<P><STRONG><a name="[bb]"></a>osKernelStart</STRONG> (Thumb, 36 bytes, Stack size 8 bytes, rtx_kernel.o(.text.osKernelStart))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = osKernelStart
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -555,9 +557,9 @@ Global Symbols
 <LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osRtxMemoryPoolAlloc
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
 </UL>
-<BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osRtxTimerTick
-<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generate_melody
+<BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generate_melody
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_decode
+<LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osRtxTimerTick
 </UL>
 
 <P><STRONG><a name="[62]"></a>osRtxKernelPreInit</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, rtx_kernel.o(.text.osRtxKernelPreInit))
@@ -797,13 +799,13 @@ Global Symbols
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GREEN_LED_CONNECT
 </UL>
 
-<P><STRONG><a name="[b6]"></a>osThreadNew</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, rtx_thread.o(.text.osThreadNew))
+<P><STRONG><a name="[ba]"></a>osThreadNew</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, rtx_thread.o(.text.osThreadNew))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = osThreadNew
 </UL>
 <BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[a7]"></a>ALL_LED_OFF</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, main.o(i.ALL_LED_OFF))
+<P><STRONG><a name="[a6]"></a>ALL_LED_OFF</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, main.o(i.ALL_LED_OFF))
 <BR><BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;end_challenge
 </UL>
 
@@ -870,8 +872,8 @@ Global Symbols
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Q_Enqueue
 </UL>
 
-<P><STRONG><a name="[b2]"></a>Q_Init</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, main.o(i.Q_Init))
-<BR><BR>[Called By]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initUART2
+<P><STRONG><a name="[b6]"></a>Q_Init</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, main.o(i.Q_Init))
+<BR><BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initUART2
 </UL>
 
 <P><STRONG><a name="[3e]"></a>RED_LED_Moving</STRONG> (Thumb, 56 bytes, Stack size 8 bytes, main.o(i.RED_LED_Moving))
@@ -967,18 +969,18 @@ Global Symbols
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemCoreClockUpdate
 </UL>
 
-<P><STRONG><a name="[d3]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
+<P><STRONG><a name="[d7]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
 
-<P><STRONG><a name="[d4]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
+<P><STRONG><a name="[d8]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
 
-<P><STRONG><a name="[d5]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
+<P><STRONG><a name="[d9]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
 <P><STRONG><a name="[98]"></a>calcModValue</STRONG> (Thumb, 20 bytes, Stack size 16 bytes, main.o(i.calcModValue))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = calcModValue &rArr; __aeabi_idivmod &rArr; __aeabi_uidivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_idivmod
 </UL>
-<BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
+<BR>[Called By]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
 </UL>
 
 <P><STRONG><a name="[99]"></a>curveBackwardLeft</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, main.o(i.curveBackwardLeft))
@@ -1029,13 +1031,16 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motor
 </UL>
 
-<P><STRONG><a name="[42]"></a>end_challenge</STRONG> (Thumb, 50 bytes, Stack size 0 bytes, main.o(i.end_challenge))
-<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = end_challenge &rArr; generateEndNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
+<P><STRONG><a name="[42]"></a>end_challenge</STRONG> (Thumb, 92 bytes, Stack size 0 bytes, main.o(i.end_challenge))
+<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = end_challenge &rArr; generateEndTripleNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osThreadFlagsWait
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndNote
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndTripleNote
+<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndHalfNote
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndFullNote
 <LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OFF_ALL_GREEN_LEDS
-<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ALL_LED_OFF
+<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ALL_LED_OFF
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(i.main)
 </UL>
@@ -1043,11 +1048,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = forwardFL &rArr; __aeabi_ui2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRight
-<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
+<BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRight
+<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveForwardRight
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveForwardLeft
 </UL>
@@ -1056,11 +1061,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = forwardFR &rArr; __aeabi_ui2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnLeft
-<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
+<BR>[Called By]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnLeft
+<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveForwardRight
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveForwardLeft
 </UL>
@@ -1069,11 +1074,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = forwardRL &rArr; __aeabi_ui2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRight
-<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
+<BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRight
+<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveForwardRight
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveForwardLeft
 </UL>
@@ -1082,63 +1087,97 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = forwardRR &rArr; __aeabi_ui2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnLeft
-<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
+<BR>[Called By]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnLeft
+<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveForwardRight
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveForwardLeft
 </UL>
 
-<P><STRONG><a name="[a6]"></a>generateEndNote</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, main.o(i.generateEndNote))
-<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = generateEndNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
+<P><STRONG><a name="[ad]"></a>generateEighthNote</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, main.o(i.generateEighthNote))
+<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = generateEighthNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
-<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateRest
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
+<BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
+<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateRest
+</UL>
+<BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generate_melody
+</UL>
+
+<P><STRONG><a name="[a9]"></a>generateEndFullNote</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, main.o(i.generateEndFullNote))
+<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = generateEndFullNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
+</UL>
+<BR>[Calls]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
+<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateRest
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;end_challenge
 </UL>
 
-<P><STRONG><a name="[ad]"></a>generateFullNote</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, main.o(i.generateFullNote))
+<P><STRONG><a name="[a8]"></a>generateEndHalfNote</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, main.o(i.generateEndHalfNote))
+<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = generateEndHalfNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
+</UL>
+<BR>[Calls]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
+<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateRest
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
+</UL>
+<BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;end_challenge
+</UL>
+
+<P><STRONG><a name="[aa]"></a>generateEndTripleNote</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, main.o(i.generateEndTripleNote))
+<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = generateEndTripleNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
+</UL>
+<BR>[Calls]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
+<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateRest
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay
+</UL>
+<BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;end_challenge
+</UL>
+
+<P><STRONG><a name="[b0]"></a>generateFullNote</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, main.o(i.generateFullNote))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = generateFullNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
-<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateRest
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
+<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateRest
 </UL>
 <BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generate_melody
 </UL>
 
-<P><STRONG><a name="[ae]"></a>generateHalfNote</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, main.o(i.generateHalfNote))
+<P><STRONG><a name="[b1]"></a>generateHalfNote</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, main.o(i.generateHalfNote))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = generateHalfNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
-<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateRest
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
+<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateRest
 </UL>
 <BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generate_melody
 </UL>
 
-<P><STRONG><a name="[af]"></a>generateQuarterNote</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, main.o(i.generateQuarterNote))
+<P><STRONG><a name="[b2]"></a>generateQuarterNote</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, main.o(i.generateQuarterNote))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = generateQuarterNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
-<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateRest
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
+<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateRest
 </UL>
 <BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generate_melody
 </UL>
 
-<P><STRONG><a name="[ac]"></a>generateRest</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, main.o(i.generateRest))
-<BR><BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateQuarterNote
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateHalfNote
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateFullNote
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndNote
+<P><STRONG><a name="[af]"></a>generateRest</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, main.o(i.generateRest))
+<BR><BR>[Called By]<UL><LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateTwoFullNote
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateQuarterNote
+<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateHalfNote
+<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateFullNote
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndTripleNote
+<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndHalfNote
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndFullNote
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEighthNote
 </UL>
 
-<P><STRONG><a name="[aa]"></a>generateSignal</STRONG> (Thumb, 40 bytes, Stack size 24 bytes, main.o(i.generateSignal))
+<P><STRONG><a name="[ae]"></a>generateSignal</STRONG> (Thumb, 40 bytes, Stack size 24 bytes, main.o(i.generateSignal))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
@@ -1146,37 +1185,53 @@ Global Symbols
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2uiz
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calcModValue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateQuarterNote
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateHalfNote
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateFullNote
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndNote
+<BR>[Called By]<UL><LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateTwoFullNote
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateQuarterNote
+<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateHalfNote
+<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateFullNote
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndTripleNote
+<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndHalfNote
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndFullNote
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEighthNote
 </UL>
 
-<P><STRONG><a name="[40]"></a>generate_melody</STRONG> (Thumb, 330 bytes, Stack size 8 bytes, main.o(i.generate_melody))
-<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = generate_melody &rArr; generateQuarterNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
+<P><STRONG><a name="[b3]"></a>generateTwoFullNote</STRONG> (Thumb, 28 bytes, Stack size 8 bytes, main.o(i.generateTwoFullNote))
+<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = generateTwoFullNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
+</UL>
+<BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateSignal
+<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateRest
+</UL>
+<BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generate_melody
+</UL>
+
+<P><STRONG><a name="[40]"></a>generate_melody</STRONG> (Thumb, 346 bytes, Stack size 8 bytes, main.o(i.generate_melody))
+<BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = generate_melody &rArr; generateTwoFullNote &rArr; generateSignal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; __aeabi_llsl
 </UL>
 <BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osThreadFlagsWait
 <LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueuePut
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateQuarterNote
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateHalfNote
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateFullNote
+<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateTwoFullNote
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateQuarterNote
+<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateHalfNote
+<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateFullNote
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEighthNote
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(i.main)
 </UL>
-<P><STRONG><a name="[b3]"></a>initGPIO</STRONG> (Thumb, 536 bytes, Stack size 0 bytes, main.o(i.initGPIO))
+<P><STRONG><a name="[b7]"></a>initGPIO</STRONG> (Thumb, 536 bytes, Stack size 0 bytes, main.o(i.initGPIO))
 <BR><BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[b4]"></a>initPWM</STRONG> (Thumb, 280 bytes, Stack size 0 bytes, main.o(i.initPWM))
+<P><STRONG><a name="[b8]"></a>initPWM</STRONG> (Thumb, 280 bytes, Stack size 0 bytes, main.o(i.initPWM))
 <BR><BR>[Called By]<UL><LI><a href="#[26]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[b0]"></a>initUART2</STRONG> (Thumb, 176 bytes, Stack size 16 bytes, main.o(i.initUART2))
+<P><STRONG><a name="[b4]"></a>initUART2</STRONG> (Thumb, 176 bytes, Stack size 16 bytes, main.o(i.initUART2))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = initUART2 &rArr; __aeabi_uidivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Q_Init
-<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_SetPriority
+<BR>[Calls]<UL><LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Q_Init
+<LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_SetPriority
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__NVIC_ClearPendingIRQ
 <LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_uidivmod
 </UL>
@@ -1186,15 +1241,15 @@ Global Symbols
 <P><STRONG><a name="[26]"></a>main</STRONG> (Thumb, 248 bytes, Stack size 72 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = main &rArr; SystemCoreClockUpdate &rArr; __aeabi_uidivmod
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osThreadNew
+<BR>[Calls]<UL><LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osThreadNew
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueNew
-<LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelStart
+<LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelStart
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelInitialize
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemCoreClockUpdate
-<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initUART2
-<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initPWM
-<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initGPIO
-<LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
+<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initUART2
+<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initPWM
+<LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initGPIO
+<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
@@ -1202,11 +1257,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = motor &rArr; turnRight &rArr; startPWM &rArr; __aeabi_fsub &rArr; __aeabi_fadd &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMessageQueueGet
-<LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRight
-<LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnLeft
-<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
-<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
-<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveBackward
+<LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRight
+<LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnLeft
+<LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
+<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
+<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveBackward
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveForwardRight
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveForwardLeft
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveBackwardRight
@@ -1214,7 +1269,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(i.main)
 </UL>
-<P><STRONG><a name="[b9]"></a>moveBackward</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, main.o(i.moveBackward))
+<P><STRONG><a name="[bd]"></a>moveBackward</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, main.o(i.moveBackward))
 <BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = moveBackward &rArr; startPWM &rArr; __aeabi_fsub &rArr; __aeabi_fadd &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;startPWM
@@ -1226,7 +1281,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motor
 </UL>
 
-<P><STRONG><a name="[b8]"></a>moveForward</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, main.o(i.moveForward))
+<P><STRONG><a name="[bc]"></a>moveForward</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, main.o(i.moveForward))
 <BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = moveForward &rArr; startPWM &rArr; __aeabi_fsub &rArr; __aeabi_fadd &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;startPWM
@@ -1243,9 +1298,9 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_common_switch8
 </UL>
-<BR>[Called By]<UL><LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osRtxTimerTick
-<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osRtxThreadStackCheck
+<BR>[Called By]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osRtxThreadStackCheck
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osRtxPostProcess
+<LI><a href="#[32]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osRtxTimerTick
 </UL>
 
 <P><STRONG><a name="[30]"></a>osRtxIdleThread</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, rtx_config.o(i.osRtxIdleThread))
@@ -1255,11 +1310,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = reverseFL &rArr; __aeabi_ui2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnLeft
-<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveBackward
+<BR>[Called By]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnLeft
+<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveBackward
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveBackwardRight
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveBackwardLeft
 </UL>
@@ -1268,11 +1323,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = reverseFR &rArr; __aeabi_ui2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRight
-<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveBackward
+<BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRight
+<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveBackward
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveBackwardRight
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveBackwardLeft
 </UL>
@@ -1281,11 +1336,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = reverseRL &rArr; __aeabi_ui2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnLeft
-<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveBackward
+<BR>[Called By]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnLeft
+<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveBackward
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveBackwardRight
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveBackwardLeft
 </UL>
@@ -1294,11 +1349,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = reverseRR &rArr; __aeabi_ui2f &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRight
-<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveBackward
+<BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRight
+<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveBackward
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveBackwardRight
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveBackwardLeft
 </UL>
@@ -1309,46 +1364,46 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
-<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
+<LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRight
-<LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnLeft
-<LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
-<LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveBackward
+<BR>[Called By]<UL><LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnRight
+<LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;turnLeft
+<LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveForward
+<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;moveBackward
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveForwardRight
 <LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveForwardLeft
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveBackwardRight
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;curveBackwardLeft
 </UL>
 
-<P><STRONG><a name="[be]"></a>stopFL</STRONG> (Thumb, 80 bytes, Stack size 0 bytes, main.o(i.stopFL))
-<BR><BR>[Called By]<UL><LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
+<P><STRONG><a name="[c2]"></a>stopFL</STRONG> (Thumb, 80 bytes, Stack size 0 bytes, main.o(i.stopFL))
+<BR><BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
 </UL>
 
-<P><STRONG><a name="[bf]"></a>stopFR</STRONG> (Thumb, 80 bytes, Stack size 0 bytes, main.o(i.stopFR))
-<BR><BR>[Called By]<UL><LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
+<P><STRONG><a name="[c3]"></a>stopFR</STRONG> (Thumb, 80 bytes, Stack size 0 bytes, main.o(i.stopFR))
+<BR><BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
 </UL>
 
-<P><STRONG><a name="[bc]"></a>stopMovement</STRONG> (Thumb, 20 bytes, Stack size 4 bytes, main.o(i.stopMovement))
+<P><STRONG><a name="[c0]"></a>stopMovement</STRONG> (Thumb, 20 bytes, Stack size 4 bytes, main.o(i.stopMovement))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = stopMovement
 </UL>
-<BR>[Calls]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopRR
-<LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopRL
-<LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopFR
-<LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopFL
+<BR>[Calls]<UL><LI><a href="#[c5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopRR
+<LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopRL
+<LI><a href="#[c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopFR
+<LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopFL
 </UL>
 <BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motor
 </UL>
 
-<P><STRONG><a name="[c0]"></a>stopRL</STRONG> (Thumb, 80 bytes, Stack size 0 bytes, main.o(i.stopRL))
-<BR><BR>[Called By]<UL><LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
+<P><STRONG><a name="[c4]"></a>stopRL</STRONG> (Thumb, 80 bytes, Stack size 0 bytes, main.o(i.stopRL))
+<BR><BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
 </UL>
 
-<P><STRONG><a name="[c1]"></a>stopRR</STRONG> (Thumb, 80 bytes, Stack size 0 bytes, main.o(i.stopRR))
-<BR><BR>[Called By]<UL><LI><a href="#[bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
+<P><STRONG><a name="[c5]"></a>stopRR</STRONG> (Thumb, 80 bytes, Stack size 0 bytes, main.o(i.stopRR))
+<BR><BR>[Called By]<UL><LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;stopMovement
 </UL>
 
-<P><STRONG><a name="[ba]"></a>turnLeft</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, main.o(i.turnLeft))
+<P><STRONG><a name="[be]"></a>turnLeft</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, main.o(i.turnLeft))
 <BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = turnLeft &rArr; startPWM &rArr; __aeabi_fsub &rArr; __aeabi_fadd &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;startPWM
@@ -1360,7 +1415,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motor
 </UL>
 
-<P><STRONG><a name="[bb]"></a>turnRight</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, main.o(i.turnRight))
+<P><STRONG><a name="[bf]"></a>turnRight</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, main.o(i.turnRight))
 <BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = turnRight &rArr; startPWM &rArr; __aeabi_fsub &rArr; __aeabi_fadd &rArr; _float_epilogue
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;startPWM
@@ -1376,20 +1431,23 @@ Global Symbols
 Local Symbols
 </H3>
 <P><STRONG><a name="[97]"></a>__NVIC_ClearPendingIRQ</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, main.o(i.__NVIC_ClearPendingIRQ))
-<BR><BR>[Called By]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initUART2
+<BR><BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initUART2
 <LI><a href="#[14]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART2_IRQHandler
 </UL>
 
-<P><STRONG><a name="[b1]"></a>__NVIC_SetPriority</STRONG> (Thumb, 110 bytes, Stack size 8 bytes, main.o(i.__NVIC_SetPriority))
+<P><STRONG><a name="[b5]"></a>__NVIC_SetPriority</STRONG> (Thumb, 110 bytes, Stack size 8 bytes, main.o(i.__NVIC_SetPriority))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __NVIC_SetPriority
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initUART2
+<BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initUART2
 </UL>
 
-<P><STRONG><a name="[ab]"></a>delay</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, main.o(i.delay))
+<P><STRONG><a name="[a7]"></a>delay</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, main.o(i.delay))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = delay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndNote
+<BR>[Called By]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndTripleNote
+<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndHalfNote
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateEndFullNote
+<LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;end_challenge
 </UL>
 
 <P><STRONG><a name="[2b]"></a>svcRtxKernelInitialize</STRONG> (Thumb, 328 bytes, Stack size 32 bytes, rtx_kernel.o(.text.svcRtxKernelInitialize))
